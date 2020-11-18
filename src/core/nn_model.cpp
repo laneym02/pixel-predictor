@@ -30,8 +30,10 @@ NeuralNetworkModel::NeuralNetworkModel(const vector<int> &layer_sizes,
   for (const vector<double> &layer_weights : weights_) {
     if (layer_weights.size() !=
         layer_sizes_.at(layer) * layer_sizes_.at(layer + 1)) {
-      ++layer;
+      Reset();
+      throw std::invalid_argument("different size layer sizes and weights");
     }
+    ++layer;
   }
 }
 
@@ -61,8 +63,8 @@ vector<double> NeuralNetworkModel::Output(const vector<double> &input) const {
 
 vector<vector<double>>
 NeuralNetworkModel::FeedForward(const vector<double> &input) const {
-  if (input.size() != weights_.at(0).size()) {
-    throw std::invalid_argument("no");
+  if (input.size() != layer_sizes_.at(0)) {
+    throw std::invalid_argument("wrong size");
   }
 
   vector<vector<double>> all_node_values = {input};
@@ -76,7 +78,7 @@ NeuralNetworkModel::FeedForward(const vector<double> &input) const {
     for (int i = 0; i < layer_sizes_.at(weight_level); ++i) {
       vector<double> node_weights;
       node_weights.reserve(layer_sizes_.at(weight_level + 1));
-for (int j = 0; j < layer_sizes_.at(weight_level + 1); ++j) {
+      for (int j = 0; j < layer_sizes_.at(weight_level + 1); ++j) {
         node_weights.push_back(
             weights.at(i * layer_sizes_.at(weight_level) + j));
       }

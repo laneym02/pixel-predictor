@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 set(CMAKE_CXX_STANDARD 11)
-project(ideal-gas)
+project(final-project)
 
 # This tells the compiler to not aggressively optimize and
 # to include debugging information so that the debugger
@@ -58,21 +58,21 @@ get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 
 include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
-list(APPEND CORE_SOURCE_FILES)
+list(APPEND CORE_SOURCE_FILES src/core/nn_model.cpp)
 
 list(APPEND SOURCE_FILES ${CORE_SOURCE_FILES} )
 
 list(APPEND TEST_FILES )
 
 ci_make_app(
-        APP_NAME color-predictor
+        APP_NAME pixel-predictor
         CINDER_PATH ${CINDER_PATH}
         SOURCES apps/cinder_app_main.cpp ${SOURCE_FILES}
         INCLUDES include
 )
 
 ci_make_app(
-        APP_NAME color-predictor-test
+        APP_NAME pixel-predictor-test
         CINDER_PATH ${CINDER_PATH}
         SOURCES tests/test_main.cpp ${SOURCE_FILES} ${TEST_FILES}
         INCLUDES include
@@ -80,5 +80,5 @@ ci_make_app(
 )
 
 if (MSVC)
-    set_property(TARGET color-predictor-test APPEND_STRING PROPERTY LINK_FLAGS " /SUBSYSTEM:CONSOLE")
+    set_property(TARGET pixel-predictor-test APPEND_STRING PROPERTY LINK_FLAGS " /SUBSYSTEM:CONSOLE")
 endif ()

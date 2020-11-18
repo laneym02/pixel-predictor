@@ -64,6 +64,10 @@ list(APPEND SOURCE_FILES ${CORE_SOURCE_FILES} )
 
 list(APPEND TEST_FILES )
 
+add_executable(train-model apps/train_model_main.cpp ${CORE_SOURCE_FILES})
+
+target_include_directories(train-model PRIVATE include)
+
 ci_make_app(
         APP_NAME pixel-predictor
         CINDER_PATH ${CINDER_PATH}

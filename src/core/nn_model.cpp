@@ -6,24 +6,26 @@
 
 #include <numeric>
 #include <stdexcept>
+#include <utility>
 
 namespace pixel_predictor {
 
 namespace neural_network {
 
-NeuralNetworkModel::NeuralNetworkModel() { RandomizeWeights(); }
+NeuralNetworkModel::NeuralNetworkModel() : layer_sizes_(default_layer_sizes_) {
+  RandomizeWeights();
+}
 
 NeuralNetworkModel::NeuralNetworkModel(const vector<int> &layer_sizes)
     : layer_sizes_(layer_sizes) {
   RandomizeWeights();
 }
 
-NeuralNetworkModel::NeuralNetworkModel(const vector<int> &layer_sizes,
-                                       const vector<vector<double>> &weights)
-    : layer_sizes_(layer_sizes), weights_(weights) {
+NeuralNetworkModel::NeuralNetworkModel(vector<int> layer_sizes,
+                                       vector<vector<double>> weights)
+    : layer_sizes_(std::move(layer_sizes)), weights_(std::move(weights)) {
   // check that all weight sizes are correct
-
-  if (layer_sizes_.size() != weights_.size()) {
+  if (layer_sizes_.size() != weights_.size() + 1) {
     Reset();
     throw std::invalid_argument("different size layer sizes and weights");
   }
@@ -81,12 +83,12 @@ NeuralNetworkModel::FeedForward(const vector<double> &input) const {
 
     // generate next weights
     vector<vector<double>> next_weights;
-    for (int i = 0; i < layer_sizes_.at(weight_level); ++i) {
+    for (int i = 0; i < layer_sizes_.at(weight_level + 1); ++i) {
       vector<double> node_weights;
-      node_weights.reserve(layer_sizes_.at(weight_level + 1));
-      for (int j = 0; j < layer_sizes_.at(weight_level + 1); ++j) {
+      node_weights.reserve(layer_sizes_.at(weight_level));
+      for (int j = 0; j < layer_sizes_.at(weight_level); ++j) {
         node_weights.push_back(
-            weights.at(i * layer_sizes_.at(weight_level) + j));
+            weights.at(j * layer_sizes_.at(weight_level + 1) + i));
       }
       next_weights.push_back(node_weights);
     }

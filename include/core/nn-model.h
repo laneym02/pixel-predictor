@@ -33,8 +33,8 @@ public:
    * @param layer_sizes the vector of layer sizes
    * @param weights the vector of vectors of weights
    */
-  NeuralNetworkModel(const vector<int> &layer_sizes,
-                     const vector<vector<double>> &weights);
+  NeuralNetworkModel(vector<int> layer_sizes,
+                     vector<vector<double>> weights);
 
   /**
    * Pass an input vector through the output vector
@@ -50,7 +50,7 @@ public:
 
 private:
   vector<int> default_layer_sizes_{2, 3, 4, 3};
-  vector<int> layer_sizes_ = default_layer_sizes_;
+  vector<int> layer_sizes_;
   vector<vector<double>> weights_;
 
   /**

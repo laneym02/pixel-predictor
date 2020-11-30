@@ -38,8 +38,18 @@ public:
   /**
    *
    */
-  void Train(vector<vector<double>> training_data,
-             vector<vector<double>> test_data);
+  void Train(const vector<vector<double>> &training_input,
+             const vector<vector<double>> &training_output,
+             const vector<vector<double>> &test_input,
+             const vector<vector<double>> &test_output);
+
+  /**
+   *
+   */
+  void Train(const vector<vector<double>> &training_input,
+             const vector<vector<double>> &training_output,
+             const vector<vector<double>> &test_input,
+             const vector<vector<double>> &test_output, int iterations);
 
   /**
    * Pass an input vector through the output vector
@@ -47,12 +57,6 @@ public:
    * @return the output vector
    */
   vector<double> Output(const vector<double> &input) const;
-
-  /**
- *
- */
-  void Backpropagate(vector<double> target,
-                     vector<vector<double>> node_values);
 
   /**
    * Reset the network
@@ -76,6 +80,11 @@ private:
    * @return the vector of all node values
    */
   vector<vector<double>> FeedForward(const vector<double> &input) const;
+
+  /**
+   *
+   */
+  void Backpropagate(vector<double> target, vector<vector<double>> node_values);
 
   /**
    * The activation function

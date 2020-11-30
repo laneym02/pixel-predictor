@@ -112,8 +112,18 @@ double NeuralNetworkModel::ActivationFunction(const double &input) const {
   return 1 / (1 + exp(-input));
 }
 
-void NeuralNetworkModel::Train(vector<vector<double>> training_data,
-                               vector<vector<double>> test_data) {}
+void NeuralNetworkModel::Train(const vector<vector<double>> &training_input,
+                               const vector<vector<double>> &training_output,
+                               const vector<vector<double>> &test_input,
+                               const vector<vector<double>> &test_output) {
+  Train(training_input, training_output, test_input, test_output, 20);
+}
+
+void NeuralNetworkModel::Train(const vector<vector<double>> &training_input,
+                               const vector<vector<double>> &training_output,
+                               const vector<vector<double>> &test_input,
+                               const vector<vector<double>> &test_output,
+                               int iterations) {}
 
 void NeuralNetworkModel::Backpropagate(vector<double> target,
                                        vector<vector<double>> node_values) {

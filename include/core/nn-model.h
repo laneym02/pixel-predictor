@@ -5,6 +5,7 @@
 #ifndef IDEAL_GAS_INCLUDE_CORE_NN_MODEL_H_
 
 #include <vector>
+#include <cmath>
 
 using std::vector;
 
@@ -85,6 +86,11 @@ private:
    *
    */
   void Backpropagate(vector<double> target, vector<vector<double>> node_values);
+
+  /**
+   *
+   */
+  double CalculateError(vector<double> target, vector<double> actual);
 
   /**
    * The activation function

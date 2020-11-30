@@ -123,7 +123,29 @@ void NeuralNetworkModel::Train(const vector<vector<double>> &training_input,
                                const vector<vector<double>> &training_output,
                                const vector<vector<double>> &test_input,
                                const vector<vector<double>> &test_output,
-                               int iterations) {}
+                               int iterations) {
+  for (int iteration = 0; iteration < iterations; ++iteration) {
+    for (size_t index = 0; index < training_input.size(); ++index) {
+      vector<vector<double>> node_values =
+          FeedForward(training_input.at(index));
+      Backpropagate(training_output.at(index), node_values);
+    }
+
+    double total_error = 0;
+    for (size_t index = 0; index < test_input.size(); ++index) {
+      total_error +=
+          CalculateError(test_output.at(index), Output(test_input.at(index)));
+    }
+  }
+}
+
+double NeuralNetworkModel::CalculateError(vector<double> targets,
+                                          vector<double> actuals) {
+  double total = 0;
+  for (size_t index = 0; index < targets.size(); ++index) {
+    total += pow(targets.at(index) - actuals.at(index), 2);
+  }
+}
 
 void NeuralNetworkModel::Backpropagate(vector<double> target,
                                        vector<vector<double>> node_values) {

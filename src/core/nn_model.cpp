@@ -115,7 +115,65 @@ double NeuralNetworkModel::ActivationFunction(const double &input) const {
 void NeuralNetworkModel::Train(vector<vector<double>> training_data,
                                vector<vector<double>> test_data) {}
 
-void NeuralNetworkModel::Backpropagate(vector<vector<double>> node_values) {}
+void NeuralNetworkModel::Backpropagate(vector<double> target,
+                                       vector<vector<double>> node_values) {
+  vector<vector<double>> error_values;
+  vector<vector<double>> delta_weights;
+
+  vector<double> final_errors;
+  int index = 0;
+  for (const double &actual : node_values.back()) {
+    final_errors.push_back((target.at(index) - actual) *
+                           ActivationDerivative(actual));
+    ++index;
+  }
+  error_values.push_back(final_errors);
+
+  for (size_t layer = node_values.size() - 2; layer > 0; --layer) {
+    vector<double> layer_errors;
+    vector<double> layer_delta_weights;
+
+    vector<vector<double>> next_weights;
+    for (size_t i = 0; i < layer_sizes_.at(layer); ++i) {
+      vector<double> node_weights;
+      for (size_t j = 0; j < layer_sizes_.at(layer + 1); ++j) {
+        node_weights.push_back(
+            weights_.at(layer).at(i * layer_sizes_.at(layer) + j));
+      }
+      next_weights.push_back(node_weights);
+    }
+
+    for (size_t weight = 0; weight < weights_.at(layer).size(); ++weight) {
+      int previous_node = floor(weight / layer_sizes_.at(layer));
+      int next_node = weight % layer_sizes_.at(layer + 1);
+      layer_delta_weights.push_back(alpha_ * error_values.back().at(next_node) *
+                                    node_values.at(layer).at(previous_node));
+    }
+
+    for (size_t node = 0; node < layer_sizes_.at(layer); ++node) {
+      layer_errors.push_back(
+          std::inner_product(error_values.back().begin(),
+                             error_values.back().end(),
+                             next_weights.at(node).begin(), 0.0) *
+          ActivationDerivative(node_values.at(layer).at(node)));
+    }
+
+    error_values.push_back(layer_errors);
+    delta_weights.push_back(layer_delta_weights);
+  }
+
+  // update weights
+  for (size_t layer = 0; layer < weights_.size(); ++layer) {
+    for (size_t weight = 0; weight < weights_.at(layer).size(); ++weight) {
+      weights_.at(layer).at(weight) +=
+          delta_weights.at(delta_weights.size() - 1 - layer).at(weight);
+    }
+  }
+}
+
+double NeuralNetworkModel::ActivationDerivative(const double &value) const {
+  return value * (1 - value);
+}
 
 } // namespace neural_network
 

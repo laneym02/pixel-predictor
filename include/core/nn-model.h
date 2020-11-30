@@ -57,6 +57,7 @@ private:
   vector<int> default_layer_sizes_{2, 3, 4, 3};
   vector<int> layer_sizes_;
   vector<vector<double>> weights_;
+  double alpha_ = 1;
 
   /**
    * Populate weights_ with random weights
@@ -66,7 +67,8 @@ private:
   /**
    *
    */
-   void Backpropagate(vector<vector<double>> node_values);
+  void Backpropagate(vector<double> target,
+                     vector<vector<double>> node_values >);
 
   /**
    * Calculate the node values when feeding an input vector through the network
@@ -81,6 +83,8 @@ private:
    * @return the output of the activation function
    */
   double ActivationFunction(const double &input) const;
+
+  double ActivationDerivative(const double &value) const;
 };
 
 } // namespace neural_network

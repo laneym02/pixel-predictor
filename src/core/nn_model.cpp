@@ -134,9 +134,10 @@ void NeuralNetworkModel::Backpropagate(vector<double> target,
     vector<double> layer_delta_weights;
 
     vector<vector<double>> next_weights;
-    for (size_t i = 0; i < layer_sizes_.at(layer); ++i) {
+    for (int i = 0; i < layer_sizes_.at(layer); ++i) {
       vector<double> node_weights;
-      for (size_t j = 0; j < layer_sizes_.at(layer + 1); ++j) {
+      node_weights.reserve(layer_sizes_.at(layer + 1));
+      for (int j = 0; j < layer_sizes_.at(layer + 1); ++j) {
         node_weights.push_back(
             weights_.at(layer).at(i * layer_sizes_.at(layer) + j));
       }
@@ -144,13 +145,13 @@ void NeuralNetworkModel::Backpropagate(vector<double> target,
     }
 
     for (size_t weight = 0; weight < weights_.at(layer).size(); ++weight) {
-      int previous_node = floor(weight / layer_sizes_.at(layer));
-      int next_node = weight % layer_sizes_.at(layer + 1);
+      unsigned int previous_node = weight / layer_sizes_.at(layer);
+      unsigned int next_node = weight % layer_sizes_.at(layer + 1);
       layer_delta_weights.push_back(alpha_ * error_values.back().at(next_node) *
                                     node_values.at(layer).at(previous_node));
     }
 
-    for (size_t node = 0; node < layer_sizes_.at(layer); ++node) {
+    for (int node = 0; node < layer_sizes_.at(layer); ++node) {
       layer_errors.push_back(
           std::inner_product(error_values.back().begin(),
                              error_values.back().end(),

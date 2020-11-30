@@ -68,7 +68,7 @@ private:
    *
    */
   void Backpropagate(vector<double> target,
-                     vector<vector<double>> node_values >);
+                     vector<vector<double>> node_values);
 
   /**
    * Calculate the node values when feeding an input vector through the network

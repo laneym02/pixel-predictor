@@ -49,6 +49,12 @@ public:
   vector<double> Output(const vector<double> &input) const;
 
   /**
+ *
+ */
+  void Backpropagate(vector<double> target,
+                     vector<vector<double>> node_values);
+
+  /**
    * Reset the network
    */
   void Reset();
@@ -63,12 +69,6 @@ private:
    * Populate weights_ with random weights
    */
   void RandomizeWeights();
-
-  /**
-   *
-   */
-  void Backpropagate(vector<double> target,
-                     vector<vector<double>> node_values);
 
   /**
    * Calculate the node values when feeding an input vector through the network

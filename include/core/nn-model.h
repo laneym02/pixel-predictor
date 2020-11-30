@@ -33,8 +33,13 @@ public:
    * @param layer_sizes the vector of layer sizes
    * @param weights the vector of vectors of weights
    */
-  NeuralNetworkModel(vector<int> layer_sizes,
-                     vector<vector<double>> weights);
+  NeuralNetworkModel(vector<int> layer_sizes, vector<vector<double>> weights);
+
+  /**
+   *
+   */
+  void Train(vector<vector<double>> training_data,
+             vector<vector<double>> test_data);
 
   /**
    * Pass an input vector through the output vector
@@ -57,6 +62,11 @@ private:
    * Populate weights_ with random weights
    */
   void RandomizeWeights();
+
+  /**
+   *
+   */
+   void Backpropagate(vector<vector<double>> node_values);
 
   /**
    * Calculate the node values when feeding an input vector through the network

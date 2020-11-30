@@ -112,6 +112,11 @@ double NeuralNetworkModel::ActivationFunction(const double &input) const {
   return 1 / (1 + exp(-input));
 }
 
+void NeuralNetworkModel::Train(vector<vector<double>> training_data,
+                               vector<vector<double>> test_data) {}
+
+void NeuralNetworkModel::Backpropagate(vector<vector<double>> node_values) {}
+
 } // namespace neural_network
 
 } // namespace pixel_predictor

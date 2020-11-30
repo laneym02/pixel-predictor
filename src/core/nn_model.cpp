@@ -96,7 +96,7 @@ NeuralNetworkModel::FeedForward(const vector<double> &input) const {
     // calculate next nodes
     vector<double> next_nodes;
     next_nodes.reserve(layer_sizes_.at(weight_level));
-    for (int i = 0; i < layer_sizes_.at(weight_level); ++i) {
+    for (int i = 0; i < layer_sizes_.at(weight_level + 1); ++i) {
       next_nodes.push_back(ActivationFunction(std::inner_product(
           all_node_values.back().begin(), all_node_values.back().end(),
           next_weights.at(i).begin(), 0.0)));

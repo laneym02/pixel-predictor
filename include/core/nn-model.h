@@ -40,17 +40,13 @@ public:
    *
    */
   void Train(const vector<vector<double>> &training_input,
-             const vector<vector<double>> &training_output,
-             const vector<vector<double>> &test_input,
-             const vector<vector<double>> &test_output);
+             const vector<vector<double>> &training_output);
 
   /**
    *
    */
   void Train(const vector<vector<double>> &training_input,
-             const vector<vector<double>> &training_output,
-             const vector<vector<double>> &test_input,
-             const vector<vector<double>> &test_output, int iterations);
+             const vector<vector<double>> &training_output, int iterations);
 
   /**
    * Pass an input vector through the output vector

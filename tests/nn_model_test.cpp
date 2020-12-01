@@ -38,20 +38,69 @@ TEST_CASE("Get neural network output") {
 }
 
 TEST_CASE("Train neural network") {
-  SECTION("Iteratively train once on one data point") {
-    vector<int> layer_sizes({2, 3, 2});
-    vector<vector<double>> weights(
-        {{1, 0.5, 0.5, 1, 1, 0.25}, {1, 0.5, 0.25, 0.5, 1, 0.5}});
+  SECTION("Train iteratively") {
+    SECTION("Once on one data point") {
+      vector<int> layer_sizes({2, 3, 2});
+      vector<vector<double>> weights(
+          {{1, 0.5, 0.5, 1, 1, 0.25}, {1, 0.5, 0.25, 0.5, 1, 0.5}});
 
-    NeuralNetworkModel model(layer_sizes, weights);
+      NeuralNetworkModel model(layer_sizes, weights);
 
-    model.Train(
-        vector<vector<double>>({{1, 2}}), vector<vector<double>>({{1, 0}}),
-        vector<vector<double>>({{1, 2}}), vector<vector<double>>({{1, 0}}), 1);
+      model.Train(vector<vector<double>>({{1, 2}}),
+                  vector<vector<double>>({{1, 0}}), 1);
 
-    vector<double> output = model.Output(vector<double>({1,2}));
+      vector<double> output = model.Output(vector<double>({1, 2}));
 
-    REQUIRE(output.at(0) == Approx(0.8739710314));
-    REQUIRE(output.at(1) == Approx(0.7302340494));
+      REQUIRE(output.at(0) == Approx(0.8739710314));
+      REQUIRE(output.at(1) == Approx(0.7302340494));
+    }
+
+    SECTION("Multiple iterations on one data point") {
+      vector<int> layer_sizes({2, 3, 2});
+      vector<vector<double>> weights(
+          {{1, 0.5, 0.5, 1, 1, 0.25}, {1, 0.5, 0.25, 0.5, 1, 0.5}});
+
+      NeuralNetworkModel model(layer_sizes, weights);
+
+      model.Train(vector<vector<double>>({{1, 2}}),
+                  vector<vector<double>>({{1, 0}}), 3);
+
+      vector<double> output = model.Output(vector<double>({1, 2}));
+
+      REQUIRE(output.at(0) == Approx(0.8788204623));
+      REQUIRE(output.at(1) == Approx(0.5814688036));
+    }
+
+    SECTION("One iteration on multiple data points") {
+      vector<int> layer_sizes({2, 3, 2});
+      vector<vector<double>> weights(
+          {{1, 0.5, 0.5, 1, 1, 0.25}, {1, 0.5, 0.25, 0.5, 1, 0.5}});
+
+      NeuralNetworkModel model(layer_sizes, weights);
+
+      model.Train(vector<vector<double>>({{1, 2}, {0.5, 2.5}}),
+                  vector<vector<double>>({{1, 0}, {0.5, 0.2}}), 1);
+
+      vector<double> output = model.Output(vector<double>({1, 2}));
+
+      REQUIRE(output.at(0) == Approx(0.8606789496));
+      REQUIRE(output.at(1) == Approx(0.6794101896));
+    }
+
+    SECTION("Multiple iterations on multiple data points") {
+      vector<int> layer_sizes({2, 3, 2});
+      vector<vector<double>> weights(
+          {{1, 0.5, 0.5, 1, 1, 0.25}, {1, 0.5, 0.25, 0.5, 1, 0.5}});
+
+      NeuralNetworkModel model(layer_sizes, weights);
+
+      model.Train(vector<vector<double>>({{1, 2}, {0.5, 2.5}}),
+                  vector<vector<double>>({{1, 0}, {0.5, 0.2}}), 10);
+
+      vector<double> output = model.Output(vector<double>({1, 2}));
+
+      REQUIRE(output.at(0) == Approx(0.7927611541));
+      REQUIRE(output.at(1) == Approx(0.1984379229));
+    }
   }
 }

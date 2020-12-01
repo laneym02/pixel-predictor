@@ -145,6 +145,7 @@ double NeuralNetworkModel::CalculateError(vector<double> targets,
   for (size_t index = 0; index < targets.size(); ++index) {
     total += pow(targets.at(index) - actuals.at(index), 2);
   }
+  return total;
 }
 
 void NeuralNetworkModel::Backpropagate(vector<double> target,
@@ -161,7 +162,8 @@ void NeuralNetworkModel::Backpropagate(vector<double> target,
   }
   error_values.push_back(final_errors);
 
-  for (size_t layer = node_values.size() - 2; layer > 0; --layer) {
+  for (size_t layer = node_values.size() - 2;
+       layer >= 0 && layer <= node_values.size(); --layer) {
     vector<double> layer_errors;
     vector<double> layer_delta_weights;
 
@@ -171,13 +173,13 @@ void NeuralNetworkModel::Backpropagate(vector<double> target,
       node_weights.reserve(layer_sizes_.at(layer + 1));
       for (int j = 0; j < layer_sizes_.at(layer + 1); ++j) {
         node_weights.push_back(
-            weights_.at(layer).at(i * layer_sizes_.at(layer) + j));
+            weights_.at(layer).at(i * layer_sizes_.at(layer + 1) + j));
       }
       next_weights.push_back(node_weights);
     }
 
     for (size_t weight = 0; weight < weights_.at(layer).size(); ++weight) {
-      unsigned int previous_node = weight / layer_sizes_.at(layer);
+      unsigned int previous_node = weight / layer_sizes_.at(layer + 1);
       unsigned int next_node = weight % layer_sizes_.at(layer + 1);
       layer_delta_weights.push_back(alpha_ * error_values.back().at(next_node) *
                                     node_values.at(layer).at(previous_node));

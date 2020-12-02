@@ -4,20 +4,24 @@
 
 #include <core/predictor_engine.h>
 
+#include <utility>
+
 namespace pixel_predictor {
 
 PredictorEngine::PredictorEngine(vector<double> max_inputs,
                                  vector<double> max_outputs)
-    : max_inputs_(max_inputs), max_outputs_(max_outputs) {}
+    : max_inputs_(std::move(max_inputs)), max_outputs_(std::move(max_outputs)) {
+}
 
 PredictorEngine::PredictorEngine(vector<double> max_inputs,
                                  vector<double> max_outputs, Method method)
-    : max_inputs_(max_inputs), max_outputs_(max_outputs), method_(method) {}
+    : max_inputs_(std::move(max_inputs)), max_outputs_(std::move(max_outputs)),
+      method_(method) {}
 
 void PredictorEngine::SetMethod(Method method) { method_ = method; }
 
 void PredictorEngine::ProcessData(vector<vector<double>> inputs,
-                              vector<vector<double>> outputs) {}
+                                  vector<vector<double>> outputs) {}
 
 vector<double> PredictorEngine::Predict(vector<double> input) {
   switch (method_) {
@@ -39,5 +43,13 @@ vector<double> PredictorEngine::AdjustOutput(vector<double> output) {
   }
   return output;
 }
-void PredictorEngine::Reset() {}
+
+void PredictorEngine::Reset() {
+  switch (method_) {
+  case NeuralNetwork:
+    network_.Reset();
+  }
+}
+
+void PredictorEngine::CreateNetwork() {}
 } // namespace pixel_predictor

@@ -9,6 +9,7 @@
 #include <core/nn-model.h>
 
 using std::vector;
+using pixel_predictor::neural_network::NeuralNetworkModel;
 
 namespace pixel_predictor {
 
@@ -68,7 +69,7 @@ private:
   vector<double> max_inputs_;
   vector<double> max_outputs_;
 
-  neural_network::NeuralNetworkModel network_;
+  NeuralNetworkModel network_;
 
   /**
    * Adjust the inputs based on the max input values
@@ -83,6 +84,11 @@ private:
    * @return the adjusted output
    */
   vector<double> AdjustOutput(vector<double> output);
+
+  /**
+   * Create neural network
+   */
+   void CreateNetwork();
 };
 } // namespace pixel_predictor
 

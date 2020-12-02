@@ -16,8 +16,8 @@ PredictorEngine::PredictorEngine(vector<double> max_inputs,
 
 void PredictorEngine::SetMethod(Method method) { method_ = method; }
 
-void PredictorEngine::AddData(vector<vector<double>> inputs_,
-                              vector<vector<double>> outputs_) {}
+void PredictorEngine::ProcessData(vector<vector<double>> inputs,
+                              vector<vector<double>> outputs) {}
 
 vector<double> PredictorEngine::Predict(vector<double> input) {
   switch (method_) {
@@ -39,4 +39,5 @@ vector<double> PredictorEngine::AdjustOutput(vector<double> output) {
   }
   return output;
 }
+void PredictorEngine::Reset() {}
 } // namespace pixel_predictor

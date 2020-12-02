@@ -37,13 +37,18 @@ public:
   NeuralNetworkModel(vector<int> layer_sizes, vector<vector<double>> weights);
 
   /**
-   *
+   * Train a neural network
+   * @param training_input training data input
+   * @param training_output training data output
    */
   void Train(const vector<vector<double>> &training_input,
              const vector<vector<double>> &training_output);
 
   /**
-   *
+   * Iteratively train a neural network
+   * @param training_input training data input
+   * @param training_output training data output
+   * @param iterations number of iterations
    */
   void Train(const vector<vector<double>> &training_input,
              const vector<vector<double>> &training_output, int iterations);
@@ -79,12 +84,17 @@ private:
   vector<vector<double>> FeedForward(const vector<double> &input) const;
 
   /**
-   *
+   * Backpropagate on a data point
+   * @param target the target final values
+   * @param node_values the values at each node
    */
   void Backpropagate(vector<double> target, vector<vector<double>> node_values);
 
   /**
-   *
+   * Calculate the total error of a point
+   * @param target the target final values
+   * @param actual the actual final values
+   * @return the total error
    */
   double CalculateError(vector<double> target, vector<double> actual);
 
@@ -95,6 +105,11 @@ private:
    */
   double ActivationFunction(const double &input) const;
 
+  /**
+   * The derivative of the activation function
+   * @param value the value of the activation function
+   * @return the derivative at the point
+   */
   double ActivationDerivative(const double &value) const;
 };
 

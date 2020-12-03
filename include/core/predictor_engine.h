@@ -50,7 +50,7 @@ public:
    * @param inputs the inputs of the data
    * @param outputs the outputs of the data
    */
-  void ProcessData(vector<vector<double>> inputs, vector<vector<double>> outputs);
+  void ProcessData(const vector<vector<double>>& inputs, const vector<vector<double>>& outputs);
 
   /**
    * Predict the output of a point
@@ -89,6 +89,11 @@ private:
    * Create neural network
    */
    void CreateNetwork();
+
+   /**
+    * Instantiate PredictorEngine
+    */
+    void Instantiate();
 };
 } // namespace pixel_predictor
 

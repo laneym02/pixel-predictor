@@ -62,7 +62,7 @@ list(APPEND CORE_SOURCE_FILES src/core/nn_model.cpp src/core/predictor_engine.cp
 
 list(APPEND SOURCE_FILES ${CORE_SOURCE_FILES} )
 
-list(APPEND TEST_FILES tests/nn_model_test.cpp)
+list(APPEND TEST_FILES tests/nn_model_test.cpp tests/predictor_engine_test.cpp)
 
 add_executable(train-model apps/train_model_main.cpp ${CORE_SOURCE_FILES})
 

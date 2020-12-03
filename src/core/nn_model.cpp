@@ -53,6 +53,8 @@ void NeuralNetworkModel::RandomizeWeights() {
     vector<double> layer_weights;
 
     // generate random weights
+    layer_weights.reserve(layer_sizes_.at(prev_layer) *
+                          layer_sizes_.at(prev_layer + 1));
     for (int x = 0;
          x < layer_sizes_.at(prev_layer) * layer_sizes_.at(prev_layer + 1);
          ++x) {
@@ -175,6 +177,7 @@ void NeuralNetworkModel::Backpropagate(vector<double> target,
                                     node_values.at(layer).at(previous_node));
     }
 
+    layer_errors.reserve(layer_sizes_.at(layer));
     for (int node = 0; node < layer_sizes_.at(layer); ++node) {
       layer_errors.push_back(
           std::inner_product(error_values.back().begin(),

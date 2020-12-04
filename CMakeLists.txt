@@ -60,7 +60,7 @@ include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
 list(APPEND CORE_SOURCE_FILES src/core/nn_model.cpp src/core/predictor_engine.cpp)
 
-list(APPEND SOURCE_FILES ${CORE_SOURCE_FILES} )
+list(APPEND SOURCE_FILES ${CORE_SOURCE_FILES} src/visualizer/pixel_predictor_app.cpp src/visualizer/sketchpad.cpp)
 
 list(APPEND TEST_FILES tests/nn_model_test.cpp tests/predictor_engine_test.cpp)
 

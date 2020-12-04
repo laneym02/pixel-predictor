@@ -5,6 +5,7 @@
 #ifndef IDEAL_GAS_INCLUDE_CORE_NN_MODEL_H_
 
 #include <vector>
+#include <cmath>
 
 using std::vector;
 
@@ -33,8 +34,24 @@ public:
    * @param layer_sizes the vector of layer sizes
    * @param weights the vector of vectors of weights
    */
-  NeuralNetworkModel(vector<int> layer_sizes,
-                     vector<vector<double>> weights);
+  NeuralNetworkModel(vector<int> layer_sizes, vector<vector<double>> weights);
+
+  /**
+   * Train a neural network
+   * @param training_input training data input
+   * @param training_output training data output
+   */
+  void Train(const vector<vector<double>> &training_input,
+             const vector<vector<double>> &training_output);
+
+  /**
+   * Iteratively train a neural network
+   * @param training_input training data input
+   * @param training_output training data output
+   * @param iterations number of iterations
+   */
+  void Train(const vector<vector<double>> &training_input,
+             const vector<vector<double>> &training_output, int iterations);
 
   /**
    * Pass an input vector through the output vector
@@ -52,6 +69,7 @@ private:
   vector<int> default_layer_sizes_{2, 3, 4, 3};
   vector<int> layer_sizes_;
   vector<vector<double>> weights_;
+  double alpha_ = 1;
 
   /**
    * Populate weights_ with random weights
@@ -66,11 +84,33 @@ private:
   vector<vector<double>> FeedForward(const vector<double> &input) const;
 
   /**
+   * Backpropagate on a data point
+   * @param target the target final values
+   * @param node_values the values at each node
+   */
+  void Backpropagate(vector<double> target, vector<vector<double>> node_values);
+
+  /**
+   * Calculate the total error of a point
+   * @param target the target final values
+   * @param actual the actual final values
+   * @return the total error
+   */
+  double CalculateError(vector<double> target, vector<double> actual);
+
+  /**
    * The activation function
    * @param input the input value
    * @return the output of the activation function
    */
   double ActivationFunction(const double &input) const;
+
+  /**
+   * The derivative of the activation function
+   * @param value the value of the activation function
+   * @return the derivative at the point
+   */
+  double ActivationDerivative(const double &value) const;
 };
 
 } // namespace neural_network

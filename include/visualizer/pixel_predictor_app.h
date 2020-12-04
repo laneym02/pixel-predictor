@@ -12,6 +12,7 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "sketchpad.h"
 
 namespace pixel_predictor {
 
@@ -35,6 +36,8 @@ public:
   const size_t kImageDimension = 28;
 
 private:
+  Sketchpad sketchpad_;
+
 };
 
 } // namespace visualizer

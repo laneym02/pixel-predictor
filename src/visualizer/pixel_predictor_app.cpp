@@ -23,7 +23,6 @@ void PixelPredictorApp::draw() {
   ci::gl::drawStringCentered(
       "Press Delete to clear the sketchpad. Press Enter to make a prediction.",
       glm::vec2(kWindowSize / 2, kMargin / 2), ci::Color("black"));
-
 }
 
 void PixelPredictorApp::mouseDown(ci::app::MouseEvent event) {
@@ -41,6 +40,7 @@ void PixelPredictorApp::keyDown(ci::app::KeyEvent event) {
   case ci::app::KeyEvent::KEY_DELETE:
     sketchpad_.Clear();
     break;
+  }
 }
 
 } // namespace visualizer

@@ -55,6 +55,7 @@ vector<double> PredictorEngine::Predict(vector<double> input) {
   case NeuralNetwork:
     return AdjustOutput(network_.Output(AdjustInput(std::move(input))));
   }
+  return vector<double>();
 }
 
 vector<double> PredictorEngine::AdjustInput(vector<double> input) {

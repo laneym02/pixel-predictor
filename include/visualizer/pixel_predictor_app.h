@@ -28,11 +28,32 @@ namespace visualizer {
  */
 class PixelPredictorApp : public ci::app::App {
 public:
+  /**
+   * Creates a PixelPredictorApp
+   */
   PixelPredictorApp();
 
+  /**
+   * Updates the Cinder application
+   */
   void update() override;
+
+  /**
+   * Handles clicking mouse
+   * @param event the mouse click
+   */
   void mouseDown(ci::app::MouseEvent event) override;
+
+  /**
+   * Handles dragging mouse
+   * @param event the mouse drag
+   */
   void mouseDrag(ci::app::MouseEvent event) override;
+
+  /**
+   * Handles clicking keys
+   * @param event the key click
+   */
   void keyDown(ci::app::KeyEvent event) override;
 
   const double kMargin = 100;
@@ -48,6 +69,7 @@ public:
       (kWindowWidth - 2 * kMargin) / kImageWidth * kImageHeight;
 
 private:
+  // true while user is drawing, false while application is predicting
   bool is_in_sketchpad_mode_ = true;
 
   string font_name_ = "Calibri";
@@ -71,8 +93,16 @@ private:
   vector<vector<double>> empty_pixels_;
   vector<vector<double>> predicted_colors_;
 
+  /**
+   * Draws swatch of current brush color
+   * @param x1 the upper left x coordinate
+   * @param y1 the upper left y coordinate
+   */
   void DrawColorSwatch(int x1, int y1);
 
+  /**
+   * Predict the missing pixels
+   */
   void PredictPixels();
 };
 

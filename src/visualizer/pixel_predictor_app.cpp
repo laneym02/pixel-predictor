@@ -11,20 +11,24 @@ namespace visualizer {
 PixelPredictorApp::PixelPredictorApp()
     : sketchpad_(glm::vec2(kMargin, kMargin), kImageHeight, kImageWidth,
                  kWindowWidth - 2 * kMargin) {
-  ci::app::setWindowSize((int)kWindowWidth,
-                         (int)(kMargin * 2 + (kWindowWidth - 2 * kMargin) /
-                                                 kImageWidth * kImageHeight));
+  ci::app::setWindowSize((int)kWindowWidth, (int)(kWindowHeight));
 }
 
 void PixelPredictorApp::draw() {
-  ci::Color8u background_color(255, 246, 148); // light yellow
-  ci::gl::clear(background_color);
+  ci::gl::clear(background_color_);
 
   sketchpad_.Draw();
 
+  ci::gl::drawStringCentered("Welcome to Pixel Predictor! Draw part of an "
+                             "image and watch the predictor fill in the rest.",
+                             glm::vec2(kWindowWidth / 2, kMargin / 2),
+                             ci::Color("black"));
+
   ci::gl::drawStringCentered(
-      "Press Delete to clear the sketchpad. Press Enter to make a prediction.",
-      glm::vec2(kWindowWidth / 2, kMargin / 2), ci::Color("black"));
+      "Press the Down arrow to change color. Press Delete to clear the "
+      "sketchpad. Press Enter to predict the remaining pixels.",
+      glm::vec2(kWindowWidth / 2, kWindowHeight - kMargin / 2),
+      ci::Color("black"));
 }
 
 void PixelPredictorApp::mouseDown(ci::app::MouseEvent event) {

@@ -31,14 +31,17 @@ public:
   void mouseDrag(ci::app::MouseEvent event) override;
   void keyDown(ci::app::KeyEvent event) override;
 
-  const double kWindowWidth = 875;
+  const double kWindowWidth = 1000;
   const double kMargin = 100;
   const size_t kImageHeight = 25;
   const size_t kImageWidth = 50;
+  const double kWindowHeight =
+      kMargin * 2 + (kWindowWidth - 2 * kMargin) / kImageWidth * kImageHeight;
 
 private:
   Sketchpad sketchpad_;
 
+  ci::Color8u background_color_ = ci::Color8u(255, 246, 148); // light yellow
 };
 
 } // namespace visualizer

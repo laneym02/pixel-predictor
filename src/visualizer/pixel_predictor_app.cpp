@@ -9,8 +9,9 @@ namespace pixel_predictor {
 namespace visualizer {
 
 PixelPredictorApp::PixelPredictorApp()
-    : sketchpad_(vec2(kMargin, kMargin + kColorSwatchSize + 2 * kColorSwatchMargin), kImageHeight, kImageWidth,
-                 kWindowWidth - 2 * kMargin) {
+    : sketchpad_(
+          vec2(kMargin, kMargin + kColorSwatchSize + 2 * kColorSwatchMargin),
+          kImageHeight, kImageWidth, kWindowWidth - 2 * kMargin) {
   ci::app::setWindowSize((int)kWindowWidth, (int)(kWindowHeight));
 }
 
@@ -18,36 +19,41 @@ void PixelPredictorApp::update() {
   ci::gl::clear(ci::Color("white"));
 
   sketchpad_.Draw();
-  if (!isInSketchpadMode) {
+  if (!is_in_sketchpad_mode_) {
     sketchpad_.DrawPrediction(predicted_colors_);
   }
 
-  ci::gl::drawStringCentered("Welcome to Pixel Predictor! Draw part of an "
-                             "image and watch the predictor fill in the rest.",
+  ci::gl::drawStringCentered(welcome_message_,
                              vec2(kWindowWidth / 2, kMargin / 2),
-                             ci::Color("black"), ci::Font("Calibri", 20));
+                             ci::Color("black"), ci::Font(font_name_, 30));
 
   ci::gl::drawStringCentered(
       "Current brush color:", vec2(kWindowWidth / 2, kMargin),
-      ci::Color("black"));
+      ci::Color("black"), ci::Font(font_name_, 15));
 
   DrawColorSwatch((int)(kWindowWidth / 2 - kColorSwatchSize / 2),
                   (int)(kMargin + kColorSwatchMargin));
 
+  string options_message;
+  if (is_in_sketchpad_mode_) {
+    options_message = options_sketchpad_mode_;
+  } else {
+    options_message = options_prediction_mode_;
+  }
+
   ci::gl::drawStringCentered(
-      "Press the Down arrow to change color. Press Delete to clear the "
-      "sketchpad. Press Enter to predict the remaining pixels.",
-      vec2(kWindowWidth / 2, kWindowHeight - kMargin / 2), ci::Color("black"));
+      options_message, vec2(kWindowWidth / 2, kWindowHeight - kMargin / 2),
+      ci::Color("black"), ci::Font(font_name_, 20));
 }
 
 void PixelPredictorApp::mouseDown(ci::app::MouseEvent event) {
-  if (isInSketchpadMode) {
+  if (is_in_sketchpad_mode_) {
     sketchpad_.HandleBrush(event.getPos());
   }
 }
 
 void PixelPredictorApp::mouseDrag(ci::app::MouseEvent event) {
-  if (isInSketchpadMode) {
+  if (is_in_sketchpad_mode_) {
     sketchpad_.HandleBrush(event.getPos());
   }
 }
@@ -61,21 +67,21 @@ void PixelPredictorApp::keyDown(ci::app::KeyEvent event) {
     populated_pixels_.clear();
     empty_pixels_.clear();
     predicted_colors_.clear();
-    isInSketchpadMode = true;
+    is_in_sketchpad_mode_ = true;
     break;
   case ci::app::KeyEvent::KEY_DELETE:
-    if (isInSketchpadMode) {
+    if (is_in_sketchpad_mode_) {
       sketchpad_.Clear();
     }
     break;
   case ci::app::KeyEvent::KEY_DOWN:
-    if (isInSketchpadMode) {
+    if (is_in_sketchpad_mode_) {
       sketchpad_.NextColor();
     }
     break;
   case ci::app::KeyEvent::KEY_p:
-    if (isInSketchpadMode) {
-      isInSketchpadMode = false;
+    if (is_in_sketchpad_mode_) {
+      is_in_sketchpad_mode_ = false;
       PredictPixels();
     }
     break;

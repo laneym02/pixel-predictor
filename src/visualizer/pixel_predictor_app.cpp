@@ -9,9 +9,11 @@ namespace pixel_predictor {
 namespace visualizer {
 
 PixelPredictorApp::PixelPredictorApp()
-    : sketchpad_(glm::vec2(kMargin, kMargin), kImageDimension,
-                 kWindowSize - 2 * kMargin) {
-  ci::app::setWindowSize((int)kWindowSize, (int)kWindowSize);
+    : sketchpad_(glm::vec2(kMargin, kMargin), kImageHeight, kImageWidth,
+                 kWindowWidth - 2 * kMargin) {
+  ci::app::setWindowSize((int)kWindowWidth,
+                         (int)(kMargin * 2 + (kWindowWidth - 2 * kMargin) /
+                                                 kImageWidth * kImageHeight));
 }
 
 void PixelPredictorApp::draw() {
@@ -22,7 +24,7 @@ void PixelPredictorApp::draw() {
 
   ci::gl::drawStringCentered(
       "Press Delete to clear the sketchpad. Press Enter to make a prediction.",
-      glm::vec2(kWindowSize / 2, kMargin / 2), ci::Color("black"));
+      glm::vec2(kWindowWidth / 2, kMargin / 2), ci::Color("black"));
 }
 
 void PixelPredictorApp::mouseDown(ci::app::MouseEvent event) {
@@ -39,6 +41,9 @@ void PixelPredictorApp::keyDown(ci::app::KeyEvent event) {
     break;
   case ci::app::KeyEvent::KEY_DELETE:
     sketchpad_.Clear();
+    break;
+  case ci::app::KeyEvent::KEY_DOWN:
+    sketchpad_.NextColor();
     break;
   }
 }

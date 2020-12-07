@@ -31,9 +31,10 @@ public:
   void mouseDrag(ci::app::MouseEvent event) override;
   void keyDown(ci::app::KeyEvent event) override;
 
-  const double kWindowSize = 875;
+  const double kWindowWidth = 875;
   const double kMargin = 100;
-  const size_t kImageDimension = 28;
+  const size_t kImageHeight = 25;
+  const size_t kImageWidth = 50;
 
 private:
   Sketchpad sketchpad_;

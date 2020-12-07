@@ -65,11 +65,18 @@ public:
    */
   void Reset();
 
+private:
+  Method method_ = NeuralNetwork;
+  vector<double> max_inputs_;
+  vector<double> max_outputs_;
+
+  NeuralNetworkModel network_;
+
   /**
- * Adjust the inputs based on the max input values
- * @param input the input vector
- * @return the adjusted input
- */
+   * Adjust the inputs based on the max input values
+   * @param input the input vector
+   * @return the adjusted input
+   */
   vector<double> AdjustInput(const vector<double> &input);
 
   /**
@@ -78,27 +85,6 @@ public:
    * @return the adjusted output
    */
   vector<double> AdjustOutput(const vector<double> &output);
-
-private:
-  Method method_ = NeuralNetwork;
-  vector<double> max_inputs_;
-  vector<double> max_outputs_;
-
-  NeuralNetworkModel network_;
-
-//  /**
-//   * Adjust the inputs based on the max input values
-//   * @param input the input vector
-//   * @return the adjusted input
-//   */
-//  vector<double> AdjustInput(const vector<double> &input);
-//
-//  /**
-//   * Adjust the outputs based on the max output values
-//   * @param output the output vector
-//   * @return the adjusted output
-//   */
-//  vector<double> AdjustOutput(const vector<double> &output);
 
   /**
    * Instantiate PredictorEngine

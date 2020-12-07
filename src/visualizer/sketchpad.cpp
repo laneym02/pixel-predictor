@@ -92,10 +92,6 @@ void Sketchpad::DrawEmpty(ci::Rectf rectangle) const {
                    vec2(rectangle.x2, rectangle.y1));
 }
 
-vector<double> Sketchpad::GetDefaultColorVector() {
-  return {default_color_[0], default_color_[1], default_color_[2]};
-}
-
 void Sketchpad::DrawPrediction(const vector<vector<double>> &predicted_colors) {
   auto iterator = predicted_colors.begin();
 

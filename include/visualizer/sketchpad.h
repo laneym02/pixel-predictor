@@ -24,41 +24,36 @@ namespace visualizer {
 class Sketchpad {
 public:
   /**
-   * Creates a sketchpad.
-   * (Note that sketchpad pixels are larger than screen pixels.)
-   *
-   * @param top_left_corner     the screen coordinates of the top left corner of
-   *                            the sketchpad
-   * @param num_pixels_per_side the number of sketchpad pixels in one row/column
-   *                            of the sketchpad
-   * @param sketchpad_size      the side length of the sketchpad, measured in
-   *                            screen pixels
-   * @param brush_radius        the maximum distance (measured in sketchpad
-   *                            pixels) from the brush that will be shaded
+   * Creates a sketchpad
+   * @param top_left_corner the upper left corner of the sketchpad
+   * @param height_pixels the height of the sketchpad in sketchpad pixels
+   * @param width_pixels the width of the sketchpad in sketchpad pixels
+   * @param sketchpad_width the width of the sketchpad
+   * @param brush_radius the radius of the brush
    */
   Sketchpad(const glm::vec2 &top_left_corner, size_t height_pixels,
             size_t width_pixels, double sketchpad_width,
             double brush_radius = 2);
 
   /**
-   * Displays the current state of the sketchpad in the Cinder application.
+   * Displays the current state of the sketchpad in the Cinder application
    */
   void Draw() const;
 
-  void DrawPrediction(const vector<vector<double>>& predicted_colors);
+  /**
+   * Colors missing pixels in the predicted colors
+   * @param predicted_colors the colors predicted by the application
+   */
+  void DrawPrediction(const vector<vector<double>> &predicted_colors);
 
   /**
-   * Shades in the sketchpad pixels whose centers are within brush_radius units
-   * of the brush's location. (One unit is equal to the length of one sketchpad
-   * pixel.)
-   *
-   * @param brush_screen_coords the screen coordinates at which the brush is
-   *           located
+   * Colors in pixels within the radius of the brush
+   * @param brush_screen_coords the location of the center of the brush
    */
   void HandleBrush(const glm::vec2 &brush_screen_coords);
 
   /**
-   * Set all of the sketchpad pixels to an unshaded state.
+   * Set all of the sketchpad pixels to an unshaded state
    */
   void Clear();
 
@@ -69,8 +64,6 @@ public:
    * @return a vector of the RGB values of the color at that pixel
    */
   vector<double> GetColorVector(int row, int col);
-
-  vector<double> GetDefaultColorVector();
 
   /**
    * Get the current brush color
@@ -89,24 +82,33 @@ private:
   size_t height_pixels_;
   size_t width_pixels_;
 
-  /** Number of screen pixels in the width/height of one sketchpad pixel */
   double pixel_side_length_;
 
   ci::Color8u border_color_ = ci::Color8u(0, 0, 0);
 
   double brush_radius_;
-  vector<vec3> brush_colors_ = vector<vec3>(
-      {vec3(0, 0, 0), vec3(1, 0, 0), vec3(1, 0.5, 0), vec3(1, 1, 0),
-       vec3(0, 1, 0), vec3(0, 1, 1), vec3(0, 0, 1), vec3(0.5, 0, 1),
-       vec3(1, 0, 1), vec3(1, 1, 1)});
+  vector<vec3> brush_colors_ =
+      vector<vec3>({vec3(0, 0, 0), vec3(1, 0, 0), vec3(1, 0.5, 0),
+                    vec3(1, 1, 0), vec3(0, 1, 0), vec3(0, 1, 1), vec3(0, 0, 1),
+                    vec3(0.5, 0, 1), vec3(1, 0, 1), vec3(1, 1, 1)});
   size_t brush_color_index_ = 0;
 
   vec3 default_color_ = vec3(-1, -1, -1);
 
   vector<vector<vec3>> colors_;
 
+  /**
+   * Draw an empty sketchpad pixel
+   * @param rectangle the pixel bounding box
+   */
   void DrawEmpty(ci::Rectf rectangle) const;
 
+  /**
+   * Get the bounding box of a sketchpad pixel
+   * @param row the pixel row
+   * @param col the pixel column
+   * @return the bounding box
+   */
   ci::Rectf GetPixelBoundingBox(size_t row, size_t col) const;
 };
 

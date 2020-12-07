@@ -15,6 +15,7 @@
 #include "sketchpad.h"
 
 using glm::vec2;
+using pixel_predictor::PredictorEngine;
 
 namespace pixel_predictor {
 
@@ -28,7 +29,7 @@ class PixelPredictorApp : public ci::app::App {
 public:
   PixelPredictorApp();
 
-  void draw() override;
+  void update() override;
   void mouseDown(ci::app::MouseEvent event) override;
   void mouseDrag(ci::app::MouseEvent event) override;
   void keyDown(ci::app::KeyEvent event) override;
@@ -46,13 +47,24 @@ public:
       (kWindowWidth - 2 * kMargin) / kImageWidth * kImageHeight;
 
 private:
-  vec2 sketchpad_top_left_ =
-      vec2(kMargin, kMargin + kColorSwatchSize + 2 * kColorSwatchMargin);
-  Sketchpad sketchpad_;
+  bool isInSketchpadMode = true;
 
   ci::Color8u background_color_ = ci::Color8u(255, 246, 148); // light yellow
 
-  void drawColorSwatch(int x1, int y1);
+  Sketchpad sketchpad_;
+
+  PredictorEngine predictor_engine_ = PredictorEngine(
+      vector<double>({(double)kImageHeight, (double)kImageWidth}),
+      vector<double>({1, 1, 1}));
+
+  vector<vector<double>> populated_pixels_;
+  vector<vector<double>> populated_pixel_colors_;
+  vector<vector<double>> empty_pixels_;
+  vector<vector<double>> predicted_colors_;
+
+  void DrawColorSwatch(int x1, int y1);
+
+  void PredictPixels();
 };
 
 } // namespace visualizer

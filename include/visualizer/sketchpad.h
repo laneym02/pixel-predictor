@@ -38,12 +38,14 @@ public:
    */
   Sketchpad(const glm::vec2 &top_left_corner, size_t height_pixels,
             size_t width_pixels, double sketchpad_width,
-            double brush_radius = 1.15);
+            double brush_radius = 2);
 
   /**
    * Displays the current state of the sketchpad in the Cinder application.
    */
   void Draw() const;
+
+  void DrawPrediction(const vector<vector<double>>& predicted_colors);
 
   /**
    * Shades in the sketchpad pixels whose centers are within brush_radius units
@@ -67,6 +69,8 @@ public:
    * @return a vector of the RGB values of the color at that pixel
    */
   vector<double> GetColorVector(int row, int col);
+
+  vector<double> GetDefaultColorVector();
 
   /**
    * Get the current brush color
@@ -92,16 +96,18 @@ private:
 
   double brush_radius_;
   vector<vec3> brush_colors_ = vector<vec3>(
-      {vec3(0, 0, 0), vec3(255, 0, 0), vec3(255, 127, 0), vec3(255, 255, 0),
-       vec3(0, 255, 0), vec3(0, 255, 255), vec3(0, 0, 255), vec3(127, 0, 255),
-       vec3(255, 0, 255), vec3(255, 255, 255)});
+      {vec3(0, 0, 0), vec3(1, 0, 0), vec3(1, 0.5, 0), vec3(1, 1, 0),
+       vec3(0, 1, 0), vec3(0, 1, 1), vec3(0, 0, 1), vec3(0.5, 0, 1),
+       vec3(1, 0, 1), vec3(1, 1, 1)});
   size_t brush_color_index_ = 0;
 
   vec3 default_color_ = vec3(-1, -1, -1);
 
   vector<vector<vec3>> colors_;
 
-  void drawEmpty(ci::Rectf rectangle) const;
+  void DrawEmpty(ci::Rectf rectangle) const;
+
+  ci::Rectf GetPixelBoundingBox(size_t row, size_t col) const;
 };
 
 } // namespace visualizer

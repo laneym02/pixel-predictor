@@ -30,14 +30,10 @@ Sketchpad::Sketchpad(const glm::vec2 &top_left_corner, size_t height_pixels,
 void Sketchpad::Draw() const {
   for (size_t row = 0; row < height_pixels_; ++row) {
     for (size_t col = 0; col < width_pixels_; ++col) {
-      vec2 pixel_top_left = top_left_corner_ + vec2(col * pixel_side_length_,
-                                                    row * pixel_side_length_);
-      vec2 pixel_bottom_right =
-          pixel_top_left + vec2(pixel_side_length_, pixel_side_length_);
-      ci::Rectf pixel_bounding_box(pixel_top_left, pixel_bottom_right);
+      ci::Rectf pixel_bounding_box = GetPixelBoundingBox(row, col);
 
       if (colors_[row][col] == default_color_) {
-        drawEmpty(pixel_bounding_box);
+        DrawEmpty(pixel_bounding_box);
       } else {
         ci::gl::color(ci::Color(colors_[row][col][0], colors_[row][col][1],
                                 colors_[row][col][2]));
@@ -88,12 +84,50 @@ void Sketchpad::NextColor() {
   }
 }
 
-void Sketchpad::drawEmpty(ci::Rectf rectangle) const {
+void Sketchpad::DrawEmpty(ci::Rectf rectangle) const {
   ci::gl::color(cinder::Color("white"));
   ci::gl::drawSolidRect(rectangle);
   ci::gl::color(cinder::Color("red"));
   ci::gl::drawLine(vec2(rectangle.x1, rectangle.y2),
                    vec2(rectangle.x2, rectangle.y1));
+}
+
+vector<double> Sketchpad::GetDefaultColorVector() {
+  return {default_color_[0], default_color_[1], default_color_[2]};
+}
+
+void Sketchpad::DrawPrediction(const vector<vector<double>> &predicted_colors) {
+  auto iterator = predicted_colors.begin();
+  ci::gl::drawString(std::to_string((*iterator)[0]) + " " +
+                         std::to_string((*iterator)[1]) + " " +
+                         std::to_string((*iterator)[2]),
+                     vec2(0, 0), ci::Color("black"));
+
+  for (size_t row = 0; row < height_pixels_; ++row) {
+    for (size_t col = 0; col < width_pixels_; ++col) {
+      if (colors_[row][col] == default_color_) {
+        ci::Rectf pixel_bounding_box = GetPixelBoundingBox(row, col);
+
+        vector<double> next_color = *iterator;
+        ci::gl::color((float)next_color[0], (float)next_color[1],
+                      (float)next_color[2]);
+        ci::gl::drawSolidRect(pixel_bounding_box);
+
+        ci::gl::color(border_color_);
+        ci::gl::drawStrokedRect(pixel_bounding_box);
+
+        ++iterator;
+      }
+    }
+  }
+}
+
+ci::Rectf Sketchpad::GetPixelBoundingBox(size_t row, size_t col) const {
+  vec2 pixel_top_left = top_left_corner_ + vec2(col * pixel_side_length_,
+                                                row * pixel_side_length_);
+  vec2 pixel_bottom_right =
+      pixel_top_left + vec2(pixel_side_length_, pixel_side_length_);
+  return {pixel_top_left, pixel_bottom_right};
 }
 
 } // namespace visualizer

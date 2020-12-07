@@ -41,8 +41,8 @@ NeuralNetworkModel::NeuralNetworkModel(vector<int> layer_sizes,
 }
 
 void NeuralNetworkModel::Reset() {
-  layer_sizes_ = default_layer_sizes_;
   weights_.clear();
+  RandomizeWeights();
 }
 
 void NeuralNetworkModel::RandomizeWeights() {

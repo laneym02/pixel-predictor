@@ -65,6 +65,12 @@ public:
    */
   void Reset();
 
+  /**
+   * Set alpha
+   * @param alpha
+   */
+  void SetAlpha(double alpha);
+
 private:
   vector<int> default_layer_sizes_{2, 3, 4, 3};
   vector<int> layer_sizes_;

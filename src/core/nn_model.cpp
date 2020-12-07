@@ -32,8 +32,7 @@ NeuralNetworkModel::NeuralNetworkModel(vector<int> layer_sizes,
 
   int layer = 0;
   for (const vector<double> &layer_weights : weights_) {
-    if (layer_weights.size() !=
-        layer_sizes_.at(layer) * layer_sizes_.at(layer + 1)) {
+    if (layer_weights.size() != layer_sizes_[layer] * layer_sizes_[layer + 1]) {
       Reset();
       throw std::invalid_argument("different size layer sizes and weights");
     }
@@ -53,12 +52,15 @@ void NeuralNetworkModel::RandomizeWeights() {
     vector<double> layer_weights;
 
     // generate random weights
-    layer_weights.reserve(layer_sizes_.at(prev_layer) *
-                          layer_sizes_.at(prev_layer + 1));
-    for (int x = 0;
-         x < layer_sizes_.at(prev_layer) * layer_sizes_.at(prev_layer + 1);
+    layer_weights.reserve(layer_sizes_[prev_layer] *
+                          layer_sizes_[prev_layer + 1]);
+    for (int x = 0; x < layer_sizes_[prev_layer] * layer_sizes_[prev_layer + 1];
          ++x) {
-      layer_weights.push_back(rand() / RAND_MAX);
+      double weight = (double)rand() / RAND_MAX;
+      while (weight == 0) {
+        weight = (double)rand() / RAND_MAX;
+      }
+      layer_weights.push_back(weight);
     }
 
     weights_.push_back(layer_weights);
@@ -71,7 +73,7 @@ vector<double> NeuralNetworkModel::Output(const vector<double> &input) const {
 
 vector<vector<double>>
 NeuralNetworkModel::FeedForward(const vector<double> &input) const {
-  if (input.size() != layer_sizes_.at(0)) {
+  if (input.size() != layer_sizes_[0]) {
     throw std::invalid_argument("wrong size");
   }
 
@@ -80,28 +82,27 @@ NeuralNetworkModel::FeedForward(const vector<double> &input) const {
   // for each weight layer, calculate the subsequent node values
   for (size_t weight_level = 0; weight_level < weights_.size();
        ++weight_level) {
-    const vector<double> &weights = weights_.at(weight_level);
+    const vector<double> &weights = weights_[weight_level];
     vector<double> next_layer_values;
 
     // generate next weights
     vector<vector<double>> next_weights;
-    for (int i = 0; i < layer_sizes_.at(weight_level + 1); ++i) {
+    for (int i = 0; i < layer_sizes_[weight_level + 1]; ++i) {
       vector<double> node_weights;
-      node_weights.reserve(layer_sizes_.at(weight_level));
-      for (int j = 0; j < layer_sizes_.at(weight_level); ++j) {
-        node_weights.push_back(
-            weights.at(j * layer_sizes_.at(weight_level + 1) + i));
+      node_weights.reserve(layer_sizes_[weight_level]);
+      for (int j = 0; j < layer_sizes_[weight_level]; ++j) {
+        node_weights.push_back(weights[j * layer_sizes_[weight_level + 1] + i]);
       }
       next_weights.push_back(node_weights);
     }
 
     // calculate next nodes
     vector<double> next_nodes;
-    next_nodes.reserve(layer_sizes_.at(weight_level));
-    for (int i = 0; i < layer_sizes_.at(weight_level + 1); ++i) {
+    next_nodes.reserve(layer_sizes_[weight_level]);
+    for (int i = 0; i < layer_sizes_[weight_level + 1]; ++i) {
       next_nodes.push_back(ActivationFunction(std::inner_product(
           all_node_values.back().begin(), all_node_values.back().end(),
-          next_weights.at(i).begin(), 0.0)));
+          next_weights[i].begin(), 0.0)));
     }
 
     all_node_values.push_back(next_nodes);
@@ -124,9 +125,8 @@ void NeuralNetworkModel::Train(const vector<vector<double>> &training_input,
                                int iterations) {
   for (int iteration = 0; iteration < iterations; ++iteration) {
     for (size_t index = 0; index < training_input.size(); ++index) {
-      vector<vector<double>> node_values =
-          FeedForward(training_input.at(index));
-      Backpropagate(training_output.at(index), node_values);
+      vector<vector<double>> node_values = FeedForward(training_input[index]);
+      Backpropagate(training_output[index], node_values);
     }
   }
 }
@@ -135,7 +135,7 @@ double NeuralNetworkModel::CalculateError(vector<double> targets,
                                           vector<double> actuals) {
   double total = 0;
   for (size_t index = 0; index < targets.size(); ++index) {
-    total += pow(targets.at(index) - actuals.at(index), 2);
+    total += pow(targets[index] - actuals[index], 2);
   }
   return total;
 }
@@ -148,7 +148,7 @@ void NeuralNetworkModel::Backpropagate(vector<double> target,
   vector<double> final_errors;
   int index = 0;
   for (const double &actual : node_values.back()) {
-    final_errors.push_back((target.at(index) - actual) *
+    final_errors.push_back((target[index] - actual) *
                            ActivationDerivative(actual));
     ++index;
   }
@@ -160,30 +160,30 @@ void NeuralNetworkModel::Backpropagate(vector<double> target,
     vector<double> layer_delta_weights;
 
     vector<vector<double>> next_weights;
-    for (int i = 0; i < layer_sizes_.at(layer); ++i) {
+    for (int i = 0; i < layer_sizes_[layer]; ++i) {
       vector<double> node_weights;
-      node_weights.reserve(layer_sizes_.at(layer + 1));
-      for (int j = 0; j < layer_sizes_.at(layer + 1); ++j) {
+      node_weights.reserve(layer_sizes_[layer + 1]);
+      for (int j = 0; j < layer_sizes_[layer + 1]; ++j) {
         node_weights.push_back(
-            weights_.at(layer).at(i * layer_sizes_.at(layer + 1) + j));
+            weights_[layer][i * layer_sizes_[layer + 1] + j]);
       }
       next_weights.push_back(node_weights);
     }
 
-    for (size_t weight = 0; weight < weights_.at(layer).size(); ++weight) {
-      unsigned int previous_node = weight / layer_sizes_.at(layer + 1);
-      unsigned int next_node = weight % layer_sizes_.at(layer + 1);
-      layer_delta_weights.push_back(alpha_ * error_values.back().at(next_node) *
-                                    node_values.at(layer).at(previous_node));
+    for (size_t weight = 0; weight < weights_[layer].size(); ++weight) {
+      unsigned int previous_node = weight / layer_sizes_[layer + 1];
+      unsigned int next_node = weight % layer_sizes_[layer + 1];
+      layer_delta_weights.push_back(alpha_ * error_values.back()[next_node] *
+                                    node_values[layer][previous_node]);
     }
 
-    layer_errors.reserve(layer_sizes_.at(layer));
-    for (int node = 0; node < layer_sizes_.at(layer); ++node) {
-      layer_errors.push_back(
-          std::inner_product(error_values.back().begin(),
-                             error_values.back().end(),
-                             next_weights.at(node).begin(), 0.0) *
-          ActivationDerivative(node_values.at(layer).at(node)));
+    layer_errors.reserve(layer_sizes_[layer]);
+    for (int node = 0; node < layer_sizes_[layer]; ++node) {
+      layer_errors.push_back(std::inner_product(error_values.back().begin(),
+                                                error_values.back().end(),
+                                                next_weights[node].begin(),
+                                                0.0) *
+                             ActivationDerivative(node_values[layer][node]));
     }
 
     error_values.push_back(layer_errors);
@@ -192,15 +192,19 @@ void NeuralNetworkModel::Backpropagate(vector<double> target,
 
   // update weights
   for (size_t layer = 0; layer < weights_.size(); ++layer) {
-    for (size_t weight = 0; weight < weights_.at(layer).size(); ++weight) {
-      weights_.at(layer).at(weight) +=
-          delta_weights.at(delta_weights.size() - 1 - layer).at(weight);
+    for (size_t weight = 0; weight < weights_[layer].size(); ++weight) {
+      weights_[layer][weight] +=
+          delta_weights[delta_weights.size() - 1 - layer][weight];
     }
   }
 }
 
 double NeuralNetworkModel::ActivationDerivative(const double &value) const {
   return value * (1 - value);
+}
+
+void NeuralNetworkModel::SetAlpha(double alpha) {
+  alpha_ = alpha;
 }
 
 } // namespace neural_network

@@ -15,8 +15,8 @@
 #include "sketchpad.h"
 
 using glm::vec2;
-using std::string;
 using pixel_predictor::PredictorEngine;
+using std::string;
 
 namespace pixel_predictor {
 
@@ -77,7 +77,7 @@ private:
       "Welcome to Pixel Predictor! Draw part of an image and watch the "
       "predictor fill in the rest.";
   string options_sketchpad_mode_ =
-      "Press the Down arrow to change color. Press Delete to clear the "
+      "Press the Up or Down arrows to change color. Press Delete to clear the "
       "sketchpad. Press Enter to predict the remaining pixels.";
   string options_prediction_mode_ = "Press Enter to draw another image.";
 

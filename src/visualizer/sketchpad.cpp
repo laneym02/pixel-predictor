@@ -84,6 +84,13 @@ void Sketchpad::NextColor() {
   }
 }
 
+void Sketchpad::PreviousColor() {
+  if (brush_color_index_ == 0) {
+    brush_color_index_ = brush_colors_.size();
+  }
+  --brush_color_index_;
+}
+
 void Sketchpad::DrawEmpty(ci::Rectf rectangle) const {
   ci::gl::color(cinder::Color("white"));
   ci::gl::drawSolidRect(rectangle);

@@ -72,9 +72,14 @@ public:
   vec3 GetBrushColor();
 
   /**
-   * Switch to the next color;
+   * Switch to the next color
    */
   void NextColor();
+
+  /**
+   * Switch to the previous color
+   */
+  void PreviousColor();
 
 private:
   glm::vec2 top_left_corner_;

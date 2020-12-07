@@ -84,6 +84,10 @@ void PixelPredictorApp::keyDown(ci::app::KeyEvent event) {
       sketchpad_.NextColor();
     }
     break;
+  case ci::app::KeyEvent::KEY_UP:
+    if (is_in_sketchpad_mode_) {
+      sketchpad_.PreviousColor();
+    }
   }
 }
 
@@ -110,7 +114,8 @@ void PixelPredictorApp::PredictPixels() {
     }
   }
 
-  predictor_engine_.ProcessData(populated_pixels_, populated_pixel_colors_, iterations_);
+  predictor_engine_.ProcessData(populated_pixels_, populated_pixel_colors_,
+                                iterations_);
 
   for (const vector<double> &location : empty_pixels_) {
     predicted_colors_.push_back(predictor_engine_.Predict(location));

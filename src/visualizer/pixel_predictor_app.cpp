@@ -61,13 +61,18 @@ void PixelPredictorApp::mouseDrag(ci::app::MouseEvent event) {
 void PixelPredictorApp::keyDown(ci::app::KeyEvent event) {
   switch (event.getCode()) {
   case ci::app::KeyEvent::KEY_RETURN:
-    sketchpad_.Clear();
-    predictor_engine_.Reset();
-    populated_pixel_colors_.clear();
-    populated_pixels_.clear();
-    empty_pixels_.clear();
-    predicted_colors_.clear();
-    is_in_sketchpad_mode_ = true;
+    if (is_in_sketchpad_mode_) {
+      PredictPixels();
+      is_in_sketchpad_mode_ = false;
+    } else {
+      sketchpad_.Clear();
+      predictor_engine_.Reset();
+      populated_pixel_colors_.clear();
+      populated_pixels_.clear();
+      empty_pixels_.clear();
+      predicted_colors_.clear();
+      is_in_sketchpad_mode_ = true;
+    }
     break;
   case ci::app::KeyEvent::KEY_DELETE:
     if (is_in_sketchpad_mode_) {
@@ -77,12 +82,6 @@ void PixelPredictorApp::keyDown(ci::app::KeyEvent event) {
   case ci::app::KeyEvent::KEY_DOWN:
     if (is_in_sketchpad_mode_) {
       sketchpad_.NextColor();
-    }
-    break;
-  case ci::app::KeyEvent::KEY_p:
-    if (is_in_sketchpad_mode_) {
-      is_in_sketchpad_mode_ = false;
-      PredictPixels();
     }
     break;
   }
@@ -97,9 +96,10 @@ void PixelPredictorApp::DrawColorSwatch(int x1, int y1) {
   ci::gl::color(cinder::Color("black"));
   ci::gl::drawStrokedRect(bounding_box);
 }
+
 void PixelPredictorApp::PredictPixels() {
-  for (size_t row = 0; row < kImageHeight; ++row) {
-    for (size_t col = 0; col < kImageWidth; ++col) {
+  for (size_t col = 0; col < kImageWidth; ++col) {
+    for (size_t row = 0; row < kImageHeight; ++row) {
       vector<double> color = sketchpad_.GetColorVector(row, col);
       if (color[0] < 0) {
         empty_pixels_.push_back(vector<double>({(double)row, (double)col}));
@@ -110,7 +110,7 @@ void PixelPredictorApp::PredictPixels() {
     }
   }
 
-  predictor_engine_.ProcessData(populated_pixels_, populated_pixel_colors_);
+  predictor_engine_.ProcessData(populated_pixels_, populated_pixel_colors_, iterations_);
 
   for (const vector<double> &location : empty_pixels_) {
     predicted_colors_.push_back(predictor_engine_.Predict(location));

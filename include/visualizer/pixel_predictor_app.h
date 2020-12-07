@@ -56,7 +56,7 @@ private:
       "predictor fill in the rest.";
   string options_sketchpad_mode_ =
       "Press the Down arrow to change color. Press Delete to clear the "
-      "sketchpad. Press P to predict the remaining pixels.";
+      "sketchpad. Press Enter to predict the remaining pixels.";
   string options_prediction_mode_ = "Press Enter to draw another image.";
 
   Sketchpad sketchpad_;
@@ -64,6 +64,7 @@ private:
   PredictorEngine predictor_engine_ = PredictorEngine(
       vector<double>({(double)kImageHeight, (double)kImageWidth}),
       vector<double>({1, 1, 1}));
+  int iterations_ = 50;
 
   vector<vector<double>> populated_pixels_;
   vector<vector<double>> populated_pixel_colors_;

@@ -75,7 +75,7 @@ private:
   vector<int> default_layer_sizes_{2, 3, 4, 3};
   vector<int> layer_sizes_;
   vector<vector<double>> weights_;
-  double alpha_ = 1;
+  double alpha_ = 0.5;
 
   /**
    * Populate weights_ with random weights

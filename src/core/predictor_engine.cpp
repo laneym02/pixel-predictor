@@ -88,7 +88,7 @@ void PredictorEngine::Instantiate() {
   switch (method_) {
   case NeuralNetwork:
     network_ = NeuralNetworkModel(
-        {(int)max_inputs_.size(), 3, 4, (int)max_outputs_.size()});
+        {(int)max_inputs_.size(), 6, 6, (int)max_outputs_.size()});
   }
 }
 } // namespace pixel_predictor

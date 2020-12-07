@@ -98,13 +98,9 @@ vector<double> Sketchpad::GetDefaultColorVector() {
 
 void Sketchpad::DrawPrediction(const vector<vector<double>> &predicted_colors) {
   auto iterator = predicted_colors.begin();
-  ci::gl::drawString(std::to_string((*iterator)[0]) + " " +
-                         std::to_string((*iterator)[1]) + " " +
-                         std::to_string((*iterator)[2]),
-                     vec2(0, 0), ci::Color("black"));
 
-  for (size_t row = 0; row < height_pixels_; ++row) {
-    for (size_t col = 0; col < width_pixels_; ++col) {
+  for (size_t col = 0; col < width_pixels_; ++col) {
+    for (size_t row = 0; row < height_pixels_; ++row) {
       if (colors_[row][col] == default_color_) {
         ci::Rectf pixel_bounding_box = GetPixelBoundingBox(row, col);
 

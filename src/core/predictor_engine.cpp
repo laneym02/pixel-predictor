@@ -28,7 +28,8 @@ void PredictorEngine::SetMethod(Method method) {
 }
 
 void PredictorEngine::ProcessData(const vector<vector<double>> &inputs,
-                                  const vector<vector<double>> &outputs) {
+                                  const vector<vector<double>> &outputs,
+                                  int iterations) {
   if (inputs.size() != outputs.size()) {
     throw std::invalid_argument("Inputs and outputs differ in size");
   }
@@ -46,30 +47,34 @@ void PredictorEngine::ProcessData(const vector<vector<double>> &inputs,
       adjusted_outputs.push_back(AdjustOutput(output));
     }
 
-    network_.Train(adjusted_inputs, adjusted_outputs);
+    network_.Train(adjusted_inputs, adjusted_outputs, iterations);
   }
 }
 
-vector<double> PredictorEngine::Predict(vector<double> input) {
+vector<double> PredictorEngine::Predict(const vector<double> &input) {
   switch (method_) {
   case NeuralNetwork:
-    return AdjustOutput(network_.Output(AdjustInput(std::move(input))));
+    return AdjustOutput(network_.Output(AdjustInput(input)));
   }
   return vector<double>();
 }
 
-vector<double> PredictorEngine::AdjustInput(vector<double> input) {
+vector<double> PredictorEngine::AdjustInput(const vector<double> &input) {
+  vector<double> adjusted;
+  adjusted.reserve(input.size());
   for (size_t index = 0; index < input.size(); ++index) {
-    input.at(index) /= max_inputs_.at(index);
+    adjusted.push_back(input.at(index) / max_inputs_.at(index));
   }
-  return input;
+  return adjusted;
 }
 
-vector<double> PredictorEngine::AdjustOutput(vector<double> output) {
+vector<double> PredictorEngine::AdjustOutput(const vector<double> &output) {
+  vector<double> adjusted;
+  adjusted.reserve(output.size());
   for (size_t index = 0; index < output.size(); ++index) {
-    output.at(index) *= max_outputs_.at(index);
+    adjusted.push_back(output.at(index) * max_outputs_.at(index));
   }
-  return output;
+  return adjusted;
 }
 
 void PredictorEngine::Reset() {
@@ -79,11 +84,11 @@ void PredictorEngine::Reset() {
   }
 }
 
-void PredictorEngine::CreateNetwork() {}
 void PredictorEngine::Instantiate() {
   switch (method_) {
   case NeuralNetwork:
-    CreateNetwork();
+    network_ = NeuralNetworkModel(
+        {(int)max_inputs_.size(), 3, 4, (int)max_outputs_.size()});
   }
 }
 } // namespace pixel_predictor

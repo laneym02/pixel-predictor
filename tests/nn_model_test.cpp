@@ -131,11 +131,11 @@ TEST_CASE("Train neural network") {
       model.Train(vector<vector<double>>({{1, .5}, {0.5, .25}}),
                   vector<vector<double>>({{1, 0, .5}, {0.5, 0.2, .7}}), 20);
 
-      vector<double> output = model.Output(vector<double>({1, 2}));
+      vector<double> output = model.Output(vector<double>({1, .5}));
 
-      REQUIRE(output.at(0) == Approx(0.7569926622));
-      REQUIRE(output.at(1) == Approx(0.143787855));
-      REQUIRE(output.at(2) == Approx(0.6333014224));
+      REQUIRE(output.at(0) == Approx(0.7517122526));
+      REQUIRE(output.at(1) == Approx(0.1490035724));
+      REQUIRE(output.at(2) == Approx(0.6305182434));
     }
   }
 }

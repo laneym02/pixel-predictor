@@ -14,6 +14,8 @@
 #include "cinder/gl/gl.h"
 #include "sketchpad.h"
 
+using glm::vec2;
+
 namespace pixel_predictor {
 
 namespace visualizer {
@@ -31,17 +33,26 @@ public:
   void mouseDrag(ci::app::MouseEvent event) override;
   void keyDown(ci::app::KeyEvent event) override;
 
-  const double kWindowWidth = 1000;
   const double kMargin = 100;
   const size_t kImageHeight = 25;
   const size_t kImageWidth = 50;
+
+  const double kColorSwatchSize = 70;
+  const double kColorSwatchMargin = 30;
+
+  const double kWindowWidth = 1000;
   const double kWindowHeight =
-      kMargin * 2 + (kWindowWidth - 2 * kMargin) / kImageWidth * kImageHeight;
+      kMargin * 2 + kColorSwatchMargin * 2 + kColorSwatchSize +
+      (kWindowWidth - 2 * kMargin) / kImageWidth * kImageHeight;
 
 private:
+  vec2 sketchpad_top_left_ =
+      vec2(kMargin, kMargin + kColorSwatchSize + 2 * kColorSwatchMargin);
   Sketchpad sketchpad_;
 
   ci::Color8u background_color_ = ci::Color8u(255, 246, 148); // light yellow
+
+  void drawColorSwatch(int x1, int y1);
 };
 
 } // namespace visualizer

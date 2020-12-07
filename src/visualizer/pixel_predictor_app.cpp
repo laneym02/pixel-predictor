@@ -9,7 +9,7 @@ namespace pixel_predictor {
 namespace visualizer {
 
 PixelPredictorApp::PixelPredictorApp()
-    : sketchpad_(glm::vec2(kMargin, kMargin), kImageHeight, kImageWidth,
+    : sketchpad_(sketchpad_top_left_, kImageHeight, kImageWidth,
                  kWindowWidth - 2 * kMargin) {
   ci::app::setWindowSize((int)kWindowWidth, (int)(kWindowHeight));
 }
@@ -21,14 +21,20 @@ void PixelPredictorApp::draw() {
 
   ci::gl::drawStringCentered("Welcome to Pixel Predictor! Draw part of an "
                              "image and watch the predictor fill in the rest.",
-                             glm::vec2(kWindowWidth / 2, kMargin / 2),
+                             vec2(kWindowWidth / 2, kMargin / 2),
                              ci::Color("black"));
+
+  ci::gl::drawStringCentered(
+      "Current brush color:", vec2(kWindowWidth / 2, kMargin),
+      ci::Color("black"));
+
+  drawColorSwatch((int)(kWindowWidth / 2 - kColorSwatchSize / 2),
+                  (int)(kMargin + kColorSwatchMargin));
 
   ci::gl::drawStringCentered(
       "Press the Down arrow to change color. Press Delete to clear the "
       "sketchpad. Press Enter to predict the remaining pixels.",
-      glm::vec2(kWindowWidth / 2, kWindowHeight - kMargin / 2),
-      ci::Color("black"));
+      vec2(kWindowWidth / 2, kWindowHeight - kMargin / 2), ci::Color("black"));
 }
 
 void PixelPredictorApp::mouseDown(ci::app::MouseEvent event) {
@@ -50,6 +56,16 @@ void PixelPredictorApp::keyDown(ci::app::KeyEvent event) {
     sketchpad_.NextColor();
     break;
   }
+}
+
+void PixelPredictorApp::drawColorSwatch(int x1, int y1) {
+  ci::Rectf bounding_box(
+      vec2(x1, y1), vec2(x1, y1) + vec2(kColorSwatchSize, kColorSwatchSize));
+  vec3 color_vector = sketchpad_.GetBrushColor();
+  ci::gl::color(color_vector[0], color_vector[1], color_vector[2]);
+  ci::gl::drawSolidRect(bounding_box);
+  ci::gl::color(cinder::Color("black"));
+  ci::gl::drawStrokedRect(bounding_box);
 }
 
 } // namespace visualizer

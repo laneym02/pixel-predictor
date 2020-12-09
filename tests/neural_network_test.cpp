@@ -2,12 +2,12 @@
 // Created by Laney Moy on 11/17/2020.
 //
 
-#include <core/nn-model.h>
+#include <core/neural_network.h>
 
 #include <catch2/catch.hpp>
 #include <iostream>
 
-using pixel_predictor::neural_network::NeuralNetworkModel;
+using pixel_predictor::neural_network::NeuralNetwork;
 
 TEST_CASE("Get neural network output") {
 
@@ -15,7 +15,7 @@ TEST_CASE("Get neural network output") {
     vector<int> layer_sizes({2, 3});
     vector<vector<double>> weights({{1, 0.5, 0.5, 1, 1, 0.25}});
 
-    NeuralNetworkModel model(layer_sizes, weights);
+    NeuralNetwork model(layer_sizes, weights);
 
     vector<double> output = model.Output(vector<double>({1, 2}));
 
@@ -29,7 +29,7 @@ TEST_CASE("Get neural network output") {
     vector<vector<double>> weights(
         {{1, 0.5, 0.5, 1, 1, 0.25}, {1, 0.5, 0.25, 0.5, 1, 0.5}});
 
-    NeuralNetworkModel model(layer_sizes, weights);
+    NeuralNetwork model(layer_sizes, weights);
 
     vector<double> output = model.Output(vector<double>({1, 2}));
 
@@ -41,7 +41,7 @@ TEST_CASE("Get neural network output") {
     srand(0);
     vector<int> layer_sizes({2, 3, 4, 3});
 
-    NeuralNetworkModel model(layer_sizes);
+    NeuralNetwork model(layer_sizes);
 
     vector<double> output = model.Output(vector<double>({1, 2}));
 
@@ -58,7 +58,7 @@ TEST_CASE("Train neural network") {
       vector<vector<double>> weights(
           {{1, 0.5, 0.5, 1, 1, 0.25}, {1, 0.5, 0.25, 0.5, 1, 0.5}});
 
-      NeuralNetworkModel model(layer_sizes, weights);
+      NeuralNetwork model(layer_sizes, weights);
       model.SetAlpha(1);
 
       model.Train(vector<vector<double>>({{1, 2}}),
@@ -75,7 +75,7 @@ TEST_CASE("Train neural network") {
       vector<vector<double>> weights(
           {{1, 0.5, 0.5, 1, 1, 0.25}, {1, 0.5, 0.25, 0.5, 1, 0.5}});
 
-      NeuralNetworkModel model(layer_sizes, weights);
+      NeuralNetwork model(layer_sizes, weights);
       model.SetAlpha(1);
 
       model.Train(vector<vector<double>>({{1, 2}}),
@@ -92,7 +92,7 @@ TEST_CASE("Train neural network") {
       vector<vector<double>> weights(
           {{1, 0.5, 0.5, 1, 1, 0.25}, {1, 0.5, 0.25, 0.5, 1, 0.5}});
 
-      NeuralNetworkModel model(layer_sizes, weights);
+      NeuralNetwork model(layer_sizes, weights);
       model.SetAlpha(1);
 
       model.Train(vector<vector<double>>({{1, 2}, {0.5, 2.5}}),
@@ -109,7 +109,7 @@ TEST_CASE("Train neural network") {
       vector<vector<double>> weights(
           {{1, 0.5, 0.5, 1, 1, 0.25}, {1, 0.5, 0.25, 0.5, 1, 0.5}});
 
-      NeuralNetworkModel model(layer_sizes, weights);
+      NeuralNetwork model(layer_sizes, weights);
       model.SetAlpha(1);
 
       model.Train(vector<vector<double>>({{1, 2}, {0.5, 2.5}}),
@@ -125,7 +125,7 @@ TEST_CASE("Train neural network") {
       srand(0);
       vector<int> layer_sizes({2, 3, 4, 3});
 
-      NeuralNetworkModel model(layer_sizes);
+      NeuralNetwork model(layer_sizes);
       model.SetAlpha(1);
 
       model.Train(vector<vector<double>>({{1, .5}, {0.5, .25}}),

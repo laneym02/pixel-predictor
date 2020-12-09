@@ -12,17 +12,13 @@ namespace pixel_predictor {
 
 namespace neural_network {
 
-NeuralNetwork::NeuralNetwork() : layer_sizes_(default_layer_sizes_) {
-  RandomizeWeights();
-}
-
 NeuralNetwork::NeuralNetwork(const vector<int> &layer_sizes)
     : layer_sizes_(layer_sizes) {
   RandomizeWeights();
 }
 
 NeuralNetwork::NeuralNetwork(vector<int> layer_sizes,
-                                       vector<vector<double>> weights)
+                             vector<vector<double>> weights)
     : layer_sizes_(std::move(layer_sizes)), weights_(std::move(weights)) {
   // check that all weight sizes are correct
   if (layer_sizes_.size() != weights_.size() + 1) {
@@ -112,13 +108,8 @@ double NeuralNetwork::ActivationFunction(const double &input) const {
 }
 
 void NeuralNetwork::Train(const vector<vector<double>> &training_input,
-                               const vector<vector<double>> &training_output) {
-  Train(training_input, training_output, 20);
-}
-
-void NeuralNetwork::Train(const vector<vector<double>> &training_input,
-                               const vector<vector<double>> &training_output,
-                               int iterations) {
+                          const vector<vector<double>> &training_output,
+                          int iterations) {
   for (int iteration = 0; iteration < iterations; ++iteration) {
     for (size_t index = 0; index < training_input.size(); ++index) {
       vector<vector<double>> node_values = FeedForward(training_input[index]);
@@ -128,7 +119,7 @@ void NeuralNetwork::Train(const vector<vector<double>> &training_input,
 }
 
 double NeuralNetwork::CalculateError(vector<double> targets,
-                                          vector<double> actuals) {
+                                     vector<double> actuals) {
   double total = 0;
   for (size_t index = 0; index < targets.size(); ++index) {
     total += pow(targets[index] - actuals[index], 2);
@@ -137,7 +128,7 @@ double NeuralNetwork::CalculateError(vector<double> targets,
 }
 
 void NeuralNetwork::Backpropagate(vector<double> target,
-                                       vector<vector<double>> node_values) {
+                                  vector<vector<double>> node_values) {
   vector<vector<double>> error_values;
   vector<vector<double>> delta_weights;
 

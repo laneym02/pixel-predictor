@@ -4,8 +4,8 @@
 
 #ifndef IDEAL_GAS_INCLUDE_CORE_NN_MODEL_H_
 
-#include <vector>
 #include <cmath>
+#include <vector>
 
 using std::vector;
 
@@ -19,15 +19,10 @@ namespace neural_network {
 class NeuralNetwork {
 public:
   /**
-   * Create a network
-   */
-  NeuralNetwork();
-
-  /**
    * Create a neural network with specified layer sizes
    * @param layer_sizes the vector of layer sizes
    */
-  explicit NeuralNetwork(const vector<int> &layer_sizes);
+  NeuralNetwork(const vector<int> &layer_sizes = {2, 3, 4, 3});
 
   /**
    * Create a neural network with specified layer sizes and weights
@@ -37,21 +32,14 @@ public:
   NeuralNetwork(vector<int> layer_sizes, vector<vector<double>> weights);
 
   /**
-   * Train a neural network
-   * @param training_input training data input
-   * @param training_output training data output
-   */
-  void Train(const vector<vector<double>> &training_input,
-             const vector<vector<double>> &training_output);
-
-  /**
    * Iteratively train a neural network
    * @param training_input training data input
    * @param training_output training data output
    * @param iterations number of iterations
    */
   void Train(const vector<vector<double>> &training_input,
-             const vector<vector<double>> &training_output, int iterations);
+             const vector<vector<double>> &training_output,
+             int iterations = 20);
 
   /**
    * Pass an input vector through the output vector
@@ -72,7 +60,6 @@ public:
   void SetAlpha(double alpha);
 
 private:
-  vector<int> default_layer_sizes_{2, 3, 4, 3};
   vector<int> layer_sizes_;
   vector<vector<double>> weights_;
   double alpha_ = 0.5;
@@ -97,7 +84,8 @@ private:
   void Backpropagate(vector<double> target, vector<vector<double>> node_values);
 
   /**
-   * Calculate the total error of a point
+   * Calculate the total error of a point (for future use in threshold-based
+   * training)
    * @param target the target final values
    * @param actual the actual final values
    * @return the total error

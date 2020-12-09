@@ -1,15 +1,15 @@
-#Pixel Predictor: Image Completion Using a Neural Network
+# Pixel Predictor: Image Completion Using a Neural Network
 
-##What is Pixel Predictor?
+## What is Pixel Predictor?
 
 Pixel Predictor is a fun image completion application that fills in gaps in a user-drawn image. The appliction trains a 
 basic neural network on pixels painted by the user and then predicts the colors of the remaining blank pixels. 
 
 ![image_filled](https://drive.google.com/file/d/1jSnHOMh4puB8rjOpb6JAqoS4rHxl-e6n/view?usp=sharing)
 
-##Usage
+## Usage
 
-###User
+### User
 
 Pixel Predictor first presents a blank canvas with a welcome message, current paint color swatch, and a list of controls.
 

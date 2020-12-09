@@ -35,4 +35,10 @@ Visualization is done by a PixelPredictorApp object with a Sketchpad object hand
 
 ## Building the Project
 
-Pixel Predictor was developed using Windows 10 and may not function properly on other operating systems. Pixel Predictor uses [Cinder](https://libcinder.org/) for visualization. In order to run PixelPredictor, download Cinder and create the project inside the Cinder folder. The application executes using pixel-predictor.
+Pixel Predictor was developed using Windows 10 and may not function properly on other operating systems. 
+
+External libraries:
+* [Cinder](https://libcinder.org/) (Visualization): Download Cinder and create the project inside the Cinder folder. 
+* [Catch2](https://github.com/catchorg/Catch2) (Unit testing): Library added in CMakeLists file already.
+
+The application executes using pixel-predictor.

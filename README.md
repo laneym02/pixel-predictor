@@ -13,12 +13,12 @@ basic neural network on pixels painted by the user and then predicts the colors 
 
 Pixel Predictor first presents a blank sketchpad with a welcome message, a color swatch, and a list of controls.
 
-![blank](https://lh6.googleusercontent.com/u2-NcaZjurnNnLfyIgVgbCqZs32m1bHuY07eUo5BfyIJoOlnzELlGZhqVn3i3vI1dU0RYPPwIoNcAQ=w1920-h867-rw)
+![blank](https://lh4.googleusercontent.com/B_nbVIHANZ3qMKRbsXpsElmU1iLwbrS7U4MdvUvyVAExG-o7_hUu-3fIVQyoEg3iJmR8BEF2Jah9Vg=w1920-h867-rw)
 
 The user paints by clicking and dragging the mouse, switching colors with the Up and Down arrow keys. The Delete key 
 clears the canvas, and the Enter key submits the image for completion.
 
-![image](https://lh6.googleusercontent.com/o6IKopW_pHOBXOxhHLse_hUbxQzl4sGrAmjEoeJ5GQZZbqWSkckF72CJInZDNxQ-Sq7ngilsUfcB1A=w1920-h867-rw)
+![image](https://lh5.googleusercontent.com/IwjLTrltmv0MxSjYzwQRUdl1tyHyUlihMCKjYlcmYFiCiTvX6MS37EAGIlwPkMvW-fh3yAiwgdeWZw=w1920-h867-rw)
 
 After the user presses the Enter key, Pixel Predictor displays the predicted results.
 

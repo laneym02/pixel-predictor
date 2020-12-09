@@ -9,15 +9,24 @@
 namespace pixel_predictor {
 
 PredictorEngine::PredictorEngine(const vector<double> &max_inputs,
-                                 const vector<double> &max_outputs)
-    : max_inputs_(max_inputs), max_outputs_(max_outputs) {
+                                 const vector<double> &max_outputs) {
+  if (max_inputs.empty() || max_outputs.empty()) {
+    throw std::invalid_argument("Must have non-empty input and output");
+  }
+  max_inputs_ = max_inputs;
+  max_outputs_ = max_outputs;
   Instantiate();
 }
 
 PredictorEngine::PredictorEngine(const vector<double> &max_inputs,
                                  const vector<double> &max_outputs,
                                  Method method)
-    : max_inputs_(max_inputs), max_outputs_(max_outputs), method_(method) {
+    : method_(method) {
+  if (max_inputs.empty() || max_outputs.empty()) {
+    throw std::invalid_argument("Must have non-empty input and output");
+  }
+  max_inputs_ = max_inputs;
+  max_outputs_ = max_outputs;
   Instantiate();
 }
 

@@ -34,7 +34,7 @@ void PredictorEngine::ProcessData(const vector<vector<double>> &inputs,
     throw std::invalid_argument("Inputs and outputs differ in size");
   }
   switch (method_) {
-  case NeuralNetwork:
+  case BasicNeuralNetwork:
     vector<vector<double>> adjusted_inputs;
     adjusted_inputs.reserve(inputs.size());
     for (const vector<double> &input : inputs) {
@@ -53,7 +53,7 @@ void PredictorEngine::ProcessData(const vector<vector<double>> &inputs,
 
 vector<double> PredictorEngine::Predict(const vector<double> &input) {
   switch (method_) {
-  case NeuralNetwork:
+  case BasicNeuralNetwork:
     return AdjustOutput(network_.Output(AdjustInput(input)));
   }
   return vector<double>();
@@ -89,14 +89,14 @@ vector<double> PredictorEngine::AdjustOutput(const vector<double> &output) {
 
 void PredictorEngine::Reset() {
   switch (method_) {
-  case NeuralNetwork:
+  case BasicNeuralNetwork:
     network_.Reset();
   }
 }
 
 void PredictorEngine::Instantiate() {
   switch (method_) {
-  case NeuralNetwork:
+  case BasicNeuralNetwork:
     network_ = NeuralNetwork(
         {(int)max_inputs_.size(), 4, 4, 4, (int)max_outputs_.size()});
   }

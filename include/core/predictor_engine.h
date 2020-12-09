@@ -16,7 +16,7 @@ namespace pixel_predictor {
 /**
  * Prediction methods
  */
-enum Method { NeuralNetwork };
+enum Method { BasicNeuralNetwork };
 
 /**
  * The engine for the pixel predictor
@@ -66,7 +66,7 @@ public:
   void Reset();
 
 private:
-  Method method_ = NeuralNetwork;
+  Method method_ = BasicNeuralNetwork;
   vector<double> max_inputs_;
   vector<double> max_outputs_;
 

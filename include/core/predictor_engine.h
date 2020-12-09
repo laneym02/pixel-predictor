@@ -27,18 +27,10 @@ public:
    * Create a PredictorEngine
    * @param max_inputs the maximum input values
    * @param max_outputs the maximum output values
-   */
-  PredictorEngine(const vector<double> &max_inputs,
-                  const vector<double> &max_outputs);
-
-  /**
-   * Create a PredictorEngine
-   * @param max_inputs the maximum input values
-   * @param max_outputs the maximum output values
    * @param method the prediction method
    */
   PredictorEngine(const vector<double> &max_inputs,
-                  const vector<double> &max_outputs, Method method);
+                  const vector<double> &max_outputs, Method method = BasicNeuralNetwork);
 
   /**
    * Set the prediction method
@@ -67,7 +59,7 @@ public:
   void Reset();
 
 private:
-  Method method_ = BasicNeuralNetwork;
+  Method method_;
   vector<double> max_inputs_;
   vector<double> max_outputs_;
 

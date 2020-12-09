@@ -56,11 +56,7 @@ void NeuralNetworkModel::RandomizeWeights() {
                           layer_sizes_[prev_layer + 1]);
     for (int x = 0; x < layer_sizes_[prev_layer] * layer_sizes_[prev_layer + 1];
          ++x) {
-      double weight = (double)rand() / RAND_MAX;
-      while (weight == 0) {
-        weight = (double)rand() / RAND_MAX;
-      }
-      layer_weights.push_back(weight);
+      layer_weights.push_back((double)rand() / RAND_MAX * 5 - 2.5);
     }
 
     weights_.push_back(layer_weights);
@@ -203,9 +199,7 @@ double NeuralNetworkModel::ActivationDerivative(const double &value) const {
   return value * (1 - value);
 }
 
-void NeuralNetworkModel::SetAlpha(double alpha) {
-  alpha_ = alpha;
-}
+void NeuralNetworkModel::SetAlpha(double alpha) { alpha_ = alpha; }
 
 } // namespace neural_network
 

@@ -80,7 +80,14 @@ private:
   vector<double> AdjustInput(const vector<double> &input);
 
   /**
-   * Adjust the outputs based on the max output values
+   * Adjust training outputs based on the max output values
+   * @param output the output vector
+   * @return the adjusted output
+   */
+  vector<double> AdjustTrainingOutput(const vector<double> &output);
+
+  /**
+   * Adjust predicted outputs based on the max output values
    * @param output the output vector
    * @return the adjusted output
    */

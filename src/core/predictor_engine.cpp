@@ -44,7 +44,7 @@ void PredictorEngine::ProcessData(const vector<vector<double>> &inputs,
     vector<vector<double>> adjusted_outputs;
     adjusted_outputs.reserve(outputs.size());
     for (const vector<double> &output : outputs) {
-      adjusted_outputs.push_back(AdjustOutput(output));
+      adjusted_outputs.push_back(AdjustTrainingOutput(output));
     }
 
     network_.Train(adjusted_inputs, adjusted_outputs, iterations);
@@ -63,7 +63,17 @@ vector<double> PredictorEngine::AdjustInput(const vector<double> &input) {
   vector<double> adjusted;
   adjusted.reserve(input.size());
   for (size_t index = 0; index < input.size(); ++index) {
-    adjusted.push_back(input.at(index) / max_inputs_.at(index));
+    adjusted.push_back(input.at(index) / max_inputs_.at(index) * 2 - 1);
+  }
+  return adjusted;
+}
+
+vector<double>
+PredictorEngine::AdjustTrainingOutput(const vector<double> &output) {
+  vector<double> adjusted;
+  adjusted.reserve(output.size());
+  for (size_t index = 0; index < output.size(); ++index) {
+    adjusted.push_back(output.at(index) / max_outputs_.at(index));
   }
   return adjusted;
 }
@@ -88,7 +98,7 @@ void PredictorEngine::Instantiate() {
   switch (method_) {
   case NeuralNetwork:
     network_ = NeuralNetworkModel(
-        {(int)max_inputs_.size(), 6, 6, (int)max_outputs_.size()});
+        {(int)max_inputs_.size(), 4, 4, 4, (int)max_outputs_.size()});
   }
 }
 } // namespace pixel_predictor

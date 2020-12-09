@@ -110,8 +110,15 @@ double NeuralNetwork::ActivationFunction(const double &input) const {
 void NeuralNetwork::Train(const vector<vector<double>> &training_input,
                           const vector<vector<double>> &training_output,
                           int iterations) {
+  if (training_output.size() != training_input.size()) {
+    throw std::invalid_argument("Different size input and output vectors");
+  }
   for (int iteration = 0; iteration < iterations; ++iteration) {
     for (size_t index = 0; index < training_input.size(); ++index) {
+      if (training_input[index].size() != layer_sizes_[0] ||
+          training_output[index].size() != layer_sizes_.back()) {
+        throw std::invalid_argument("Incorrect training input or output size");
+      }
       vector<vector<double>> node_values = FeedForward(training_input[index]);
       Backpropagate(training_output[index], node_values);
     }

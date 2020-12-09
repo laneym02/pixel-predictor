@@ -2,7 +2,7 @@
 // Created by Laney Moy on 11/17/2020.
 //
 
-#include <core/nn-model.h>
+#include <core/neural_network.h>
 
 #include <numeric>
 #include <stdexcept>
@@ -12,16 +12,16 @@ namespace pixel_predictor {
 
 namespace neural_network {
 
-NeuralNetworkModel::NeuralNetworkModel() : layer_sizes_(default_layer_sizes_) {
+NeuralNetwork::NeuralNetwork() : layer_sizes_(default_layer_sizes_) {
   RandomizeWeights();
 }
 
-NeuralNetworkModel::NeuralNetworkModel(const vector<int> &layer_sizes)
+NeuralNetwork::NeuralNetwork(const vector<int> &layer_sizes)
     : layer_sizes_(layer_sizes) {
   RandomizeWeights();
 }
 
-NeuralNetworkModel::NeuralNetworkModel(vector<int> layer_sizes,
+NeuralNetwork::NeuralNetwork(vector<int> layer_sizes,
                                        vector<vector<double>> weights)
     : layer_sizes_(std::move(layer_sizes)), weights_(std::move(weights)) {
   // check that all weight sizes are correct
@@ -40,12 +40,12 @@ NeuralNetworkModel::NeuralNetworkModel(vector<int> layer_sizes,
   }
 }
 
-void NeuralNetworkModel::Reset() {
+void NeuralNetwork::Reset() {
   weights_.clear();
   RandomizeWeights();
 }
 
-void NeuralNetworkModel::RandomizeWeights() {
+void NeuralNetwork::RandomizeWeights() {
   // after each layer except for the last, general a layer of weights
   for (size_t prev_layer = 0; prev_layer < layer_sizes_.size() - 1;
        ++prev_layer) {
@@ -63,12 +63,12 @@ void NeuralNetworkModel::RandomizeWeights() {
   }
 }
 
-vector<double> NeuralNetworkModel::Output(const vector<double> &input) const {
+vector<double> NeuralNetwork::Output(const vector<double> &input) const {
   return FeedForward(input).back();
 }
 
 vector<vector<double>>
-NeuralNetworkModel::FeedForward(const vector<double> &input) const {
+NeuralNetwork::FeedForward(const vector<double> &input) const {
   if (input.size() != layer_sizes_[0]) {
     throw std::invalid_argument("wrong size");
   }
@@ -107,16 +107,16 @@ NeuralNetworkModel::FeedForward(const vector<double> &input) const {
   return all_node_values;
 }
 
-double NeuralNetworkModel::ActivationFunction(const double &input) const {
+double NeuralNetwork::ActivationFunction(const double &input) const {
   return 1 / (1 + exp(-input));
 }
 
-void NeuralNetworkModel::Train(const vector<vector<double>> &training_input,
+void NeuralNetwork::Train(const vector<vector<double>> &training_input,
                                const vector<vector<double>> &training_output) {
   Train(training_input, training_output, 20);
 }
 
-void NeuralNetworkModel::Train(const vector<vector<double>> &training_input,
+void NeuralNetwork::Train(const vector<vector<double>> &training_input,
                                const vector<vector<double>> &training_output,
                                int iterations) {
   for (int iteration = 0; iteration < iterations; ++iteration) {
@@ -127,7 +127,7 @@ void NeuralNetworkModel::Train(const vector<vector<double>> &training_input,
   }
 }
 
-double NeuralNetworkModel::CalculateError(vector<double> targets,
+double NeuralNetwork::CalculateError(vector<double> targets,
                                           vector<double> actuals) {
   double total = 0;
   for (size_t index = 0; index < targets.size(); ++index) {
@@ -136,7 +136,7 @@ double NeuralNetworkModel::CalculateError(vector<double> targets,
   return total;
 }
 
-void NeuralNetworkModel::Backpropagate(vector<double> target,
+void NeuralNetwork::Backpropagate(vector<double> target,
                                        vector<vector<double>> node_values) {
   vector<vector<double>> error_values;
   vector<vector<double>> delta_weights;
@@ -195,11 +195,11 @@ void NeuralNetworkModel::Backpropagate(vector<double> target,
   }
 }
 
-double NeuralNetworkModel::ActivationDerivative(const double &value) const {
+double NeuralNetwork::ActivationDerivative(const double &value) const {
   return value * (1 - value);
 }
 
-void NeuralNetworkModel::SetAlpha(double alpha) { alpha_ = alpha; }
+void NeuralNetwork::SetAlpha(double alpha) { alpha_ = alpha; }
 
 } // namespace neural_network
 

@@ -16,25 +16,25 @@ namespace neural_network {
 /**
  * Represents a neural network
  */
-class NeuralNetworkModel {
+class NeuralNetwork {
 public:
   /**
    * Create a network
    */
-  NeuralNetworkModel();
+  NeuralNetwork();
 
   /**
    * Create a neural network with specified layer sizes
    * @param layer_sizes the vector of layer sizes
    */
-  explicit NeuralNetworkModel(const vector<int> &layer_sizes);
+  explicit NeuralNetwork(const vector<int> &layer_sizes);
 
   /**
    * Create a neural network with specified layer sizes and weights
    * @param layer_sizes the vector of layer sizes
    * @param weights the vector of vectors of weights
    */
-  NeuralNetworkModel(vector<int> layer_sizes, vector<vector<double>> weights);
+  NeuralNetwork(vector<int> layer_sizes, vector<vector<double>> weights);
 
   /**
    * Train a neural network

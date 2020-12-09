@@ -5,10 +5,10 @@
 #ifndef FINAL_PROJECT_INCLUDE_CORE_PREDICTOR_ENGINE_H_
 #define FINAL_PROJECT_INCLUDE_CORE_PREDICTOR_ENGINE_H_
 
-#include <core/nn-model.h>
+#include <core/neural_network.h>
 #include <vector>
 
-using pixel_predictor::neural_network::NeuralNetworkModel;
+using pixel_predictor::neural_network::NeuralNetwork;
 using std::vector;
 
 namespace pixel_predictor {
@@ -70,7 +70,7 @@ private:
   vector<double> max_inputs_;
   vector<double> max_outputs_;
 
-  NeuralNetworkModel network_;
+  NeuralNetwork network_;
 
   /**
    * Adjust the inputs based on the max input values

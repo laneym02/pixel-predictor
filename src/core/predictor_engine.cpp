@@ -97,7 +97,7 @@ void PredictorEngine::Reset() {
 void PredictorEngine::Instantiate() {
   switch (method_) {
   case NeuralNetwork:
-    network_ = NeuralNetworkModel(
+    network_ = NeuralNetwork(
         {(int)max_inputs_.size(), 4, 4, 4, (int)max_outputs_.size()});
   }
 }

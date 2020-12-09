@@ -8,16 +8,16 @@
 
 namespace pixel_predictor {
 
-PredictorEngine::PredictorEngine(vector<double> max_inputs,
-                                 vector<double> max_outputs)
-    : max_inputs_(std::move(max_inputs)), max_outputs_(std::move(max_outputs)) {
+PredictorEngine::PredictorEngine(const vector<double> &max_inputs,
+                                 const vector<double> &max_outputs)
+    : max_inputs_(max_inputs), max_outputs_(max_outputs) {
   Instantiate();
 }
 
-PredictorEngine::PredictorEngine(vector<double> max_inputs,
-                                 vector<double> max_outputs, Method method)
-    : max_inputs_(std::move(max_inputs)), max_outputs_(std::move(max_outputs)),
-      method_(method) {
+PredictorEngine::PredictorEngine(const vector<double> &max_inputs,
+                                 const vector<double> &max_outputs,
+                                 Method method)
+    : max_inputs_(max_inputs), max_outputs_(max_outputs), method_(method) {
   Instantiate();
 }
 
@@ -38,12 +38,18 @@ void PredictorEngine::ProcessData(const vector<vector<double>> &inputs,
     vector<vector<double>> adjusted_inputs;
     adjusted_inputs.reserve(inputs.size());
     for (const vector<double> &input : inputs) {
+      if (input.size() != max_inputs_.size()) {
+        throw std::invalid_argument("Incorrect input size");
+      }
       adjusted_inputs.push_back(AdjustInput(input));
     }
 
     vector<vector<double>> adjusted_outputs;
     adjusted_outputs.reserve(outputs.size());
     for (const vector<double> &output : outputs) {
+      if (output.size() != max_outputs_.size()) {
+        throw std::invalid_argument("Incorrect output size");
+      }
       adjusted_outputs.push_back(AdjustTrainingOutput(output));
     }
 
@@ -54,6 +60,9 @@ void PredictorEngine::ProcessData(const vector<vector<double>> &inputs,
 vector<double> PredictorEngine::Predict(const vector<double> &input) {
   switch (method_) {
   case BasicNeuralNetwork:
+    if (input.size() != max_inputs_.size()) {
+      throw std::invalid_argument("Incorrect input size");
+    }
     return AdjustOutput(network_.Output(AdjustInput(input)));
   }
   return vector<double>();

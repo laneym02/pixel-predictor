@@ -28,7 +28,8 @@ public:
    * @param max_inputs the maximum input values
    * @param max_outputs the maximum output values
    */
-  PredictorEngine(vector<double> max_inputs, vector<double> max_outputs);
+  PredictorEngine(const vector<double> &max_inputs,
+                  const vector<double> &max_outputs);
 
   /**
    * Create a PredictorEngine
@@ -36,8 +37,8 @@ public:
    * @param max_outputs the maximum output values
    * @param method the prediction method
    */
-  PredictorEngine(vector<double> max_inputs, vector<double> max_outputs,
-                  Method method);
+  PredictorEngine(const vector<double> &max_inputs,
+                  const vector<double> &max_outputs, Method method);
 
   /**
    * Set the prediction method
@@ -58,7 +59,7 @@ public:
    * @param input the input vector
    * @return the output vector
    */
-  vector<double> Predict(const vector<double>& input);
+  vector<double> Predict(const vector<double> &input);
 
   /**
    * Reset the engine

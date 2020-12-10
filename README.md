@@ -5,7 +5,7 @@
 Pixel Predictor is a fun image completion application that fills in gaps in a user-drawn image. The appliction trains a 
 basic neural network on pixels painted by the user and then predicts the colors of the remaining blank pixels. 
 
-![image_filled](https://lh5.googleusercontent.com/8DBC4QTZhiABWFfQfbYLHcuRCpuEvsTL28D3nDwCdg1e4ACtPV8rozxOIISURm3hb2xR-6EM-SSp3Q=w1920-h867-rw)
+![image_filled](readme_images/image_filled.PNG)
 
 ## Usage
 
@@ -13,16 +13,16 @@ basic neural network on pixels painted by the user and then predicts the colors 
 
 Pixel Predictor first presents a blank sketchpad with a welcome message, a color swatch, and a list of controls.
 
-![blank](https://lh4.googleusercontent.com/B_nbVIHANZ3qMKRbsXpsElmU1iLwbrS7U4MdvUvyVAExG-o7_hUu-3fIVQyoEg3iJmR8BEF2Jah9Vg=w1920-h867-rw)
+![blank](readme_images/blank.PNG)
 
 The user paints by clicking and dragging the mouse, switching colors with the Up and Down arrow keys. The Delete key 
 clears the canvas, and the Enter key submits the image for completion.
 
-![image](https://lh5.googleusercontent.com/IwjLTrltmv0MxSjYzwQRUdl1tyHyUlihMCKjYlcmYFiCiTvX6MS37EAGIlwPkMvW-fh3yAiwgdeWZw=w1920-h867-rw)
+![image](readme_images/image.PNG)
 
 After the user presses the Enter key, Pixel Predictor displays the predicted results.
 
-![image_filled](https://lh5.googleusercontent.com/8DBC4QTZhiABWFfQfbYLHcuRCpuEvsTL28D3nDwCdg1e4ACtPV8rozxOIISURm3hb2xR-6EM-SSp3Q=w1920-h867-rw)
+![image_filled](readme_images/image_filled.PNG)
 
 Clicking the Enter key returns to the original blank canvas, on which the user can draw another image.
 
